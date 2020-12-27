@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { client } from '../network/apollo-client'
+import { useQuery } from '@apollo/react-hooks'
 import { GET_TRANSACTIONS } from '../queries/transaction-queries'
 
 const mockTransactions = [
@@ -8,7 +8,7 @@ const mockTransactions = [
 ]
 
 export function TransactionsPage () {
-  const { data } = client.query({ query: GET_TRANSACTIONS })
+  const { data } = useQuery(GET_TRANSACTIONS)
 
   const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
   const [transactions, setTransactions] = useState(mockTransactions)
