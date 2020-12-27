@@ -46,7 +46,6 @@ export function AddTransaction () {
   const handleSubmit = event => {
     event.preventDefault()
     createTransaction({ variables: currentTransaction })
-    console.log('here')
     // Query will go here
     setCurrentTransaction({ amount: null, user: null, merchant: null, description: null, credit: false, debit: false })
   }
