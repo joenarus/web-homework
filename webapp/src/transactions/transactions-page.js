@@ -1,4 +1,6 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
+import { client } from '../network/apollo-client'
+import { GET_TRANSACTIONS } from '../queries/transaction-queries'
 
 const mockTransactions = [
   { id: 1, amount: '400.00', user: 'Joe', merchant: 'Best Buy', description: 'Electronics', credit: false, debit: true },
@@ -6,8 +8,16 @@ const mockTransactions = [
 ]
 
 export function TransactionsPage () {
-  const [transactions, setTransactions] = useState(mockTransactions)
+  const { data } = client.query({ query: GET_TRANSACTIONS })
+
   const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
+  const [transactions, setTransactions] = useState(mockTransactions)
+
+  useEffect(() => {
+    if (data && data.transactions) {
+      console.log(data)
+    }
+  }, [data])
 
   const handleInputChange = event => {
     const target = event.target
@@ -71,7 +81,6 @@ export function TransactionsPage () {
             ))}
           </tbody>
         </table>
-
       </form>
     </Fragment>
   )
