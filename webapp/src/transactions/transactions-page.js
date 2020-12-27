@@ -15,7 +15,7 @@ export function TransactionsPage () {
 
   useEffect(() => {
     if (data && data.transactions) {
-      console.log(data)
+      setTransactions(data.transactions)
     }
   }, [data])
 
@@ -73,8 +73,8 @@ export function TransactionsPage () {
           <tbody>
             {transactions.map(transaction => (
               <tr key={transaction.id}>
-                <td>{transaction.user}</td>
-                <td>{transaction.merchant}</td>
+                <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
+                <td>{transaction.merchant.name}</td>
                 <td>{transaction.description}</td>
                 <td>{(transaction.credit ? '+' : transaction.debit ? '-' : '') + transaction.amount }</td>
               </tr>
