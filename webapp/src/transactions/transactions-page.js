@@ -1,78 +1,90 @@
-import React, { useState, Fragment } from 'react'
-
-const mockTransactions = [
-  { id: 1, amount: '400.00', user: 'Joe', merchant: 'Best Buy', description: 'Electronics', credit: false, debit: true },
-  { id: 2, amount: '100.00', user: 'Joe', merchant: 'Target', description: 'Return', credit: true, debit: false }
-]
-
+import React, { useState, Fragment, useEffect } from 'react'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import { GET_TRANSACTIONS, EDIT_TRANSACTION, DELETE_TRANSACTION } from '../queries/transaction-queries'
+import { AddTransaction } from './add-transactions'
+import { css } from '@emotion/core'
+import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
+import { Trash } from '@emotion-icons/bootstrap/Trash'
 export function TransactionsPage () {
-  const [transactions, setTransactions] = useState(mockTransactions)
-  const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
+  const { data } = useQuery(GET_TRANSACTIONS, { pollInterval: 200 })
+  const [editTransaction] = useMutation(EDIT_TRANSACTION)
+  const [deleteTransaction] = useMutation(DELETE_TRANSACTION)
 
-  const handleInputChange = event => {
-    const target = event.target
-    const value = target.type === 'checkbox' ? target.checked : target.value
+  const [transactions, setTransactions] = useState([])
 
-    const name = target.name
+  useEffect(() => {
+    if (data && data.transactions) {
+      setTransactions(data.transactions)
+    }
+  }, [data])
 
-    const transaction = { ...currentTransaction, [name]: value }
-    setCurrentTransaction(transaction)
+  function handleEditTransaction (transaction) {
+    editTransaction({ variables: generateVariables({ ...transaction }) })
   }
 
-  const handleSubmit = event => {
-    event.preventDefault()
-    const transaction = { ...currentTransaction, id: transactions.length + 1 }
-    const newTransactions = [ ...transactions, transaction ]
-    setTransactions(newTransactions)
-    setCurrentTransaction({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
+  function handleRemoveTransaction (transaction) {
+    deleteTransaction({ variables: generateVariables({ ...transaction }) })
+  }
+
+  function generateVariables (transaction) {
+    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id }
   }
 
   return (
     <Fragment>
-      <form onSubmit={handleSubmit}>
-        <h2>Transactions</h2>
-        <h3>Add Transaction</h3>
-        <label>
-          Amount
-          <input name='amount' onChange={handleInputChange} type='text' value={currentTransaction.amount} />
-        </label>
-        <label>
-          User
-          <input name='user' onChange={handleInputChange} type='text' value={currentTransaction.user} />
-        </label>
-        <label>
-          Merchant
-          <input name='merchant' onChange={handleInputChange} type='text' value={currentTransaction.merchant} />
-        </label>
-        <label>
-          Description
-          <input name='description' onChange={handleInputChange} type='text' value={currentTransaction.description} />
-        </label>
-        <input type='submit' value='Save' />
-
-        <h3>Past Transactions</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Merchant</th>
-              <th>Description</th>
-              <th>Amount</th>
+      <h2>Transactions</h2>
+      <AddTransaction />
+      <h3>Past Transactions</h3>
+      <table css={transactionTable}>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Merchant</th>
+            <th>Description</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody css={transactionBody}>
+          {transactions.map(transaction => (
+            <tr className='transaction' key={transaction.id}>
+              <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
+              <td>{transaction.merchant.name}</td>
+              <td>{transaction.description}</td>
+              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount / 100 }</td>
+              <td>
+                <PencilSquare className='action-btn' onClick={() => handleEditTransaction(transaction)} size='40' />
+                <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='40' />
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {transactions.map(transaction => (
-              <tr key={transaction.id}>
-                <td>{transaction.user}</td>
-                <td>{transaction.merchant}</td>
-                <td>{transaction.description}</td>
-                <td>{(transaction.credit ? '+' : transaction.debit ? '-' : '') + transaction.amount }</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-      </form>
+          ))}
+        </tbody>
+      </table>
     </Fragment>
   )
 }
+
+const transactionTable = css`
+  width: 100%;
+`
+
+const transactionBody = css`
+tr {
+  height: 80px;
+}
+tr:nth-child(even) {background-color: lightgray;}
+
+.credit {
+  color: #008525
+}
+
+.debit {
+  color: #a10005
+}
+
+.action-btn {
+  padding:10px;
+  :hover {
+    {cursor: pointer;}
+  }
+}
+`
