@@ -3,7 +3,8 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { GET_TRANSACTIONS, EDIT_TRANSACTION, DELETE_TRANSACTION } from '../queries/transaction-queries'
 import { AddTransaction } from './add-transactions'
 import { css } from '@emotion/core'
-
+import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
+import { Trash } from '@emotion-icons/bootstrap/Trash'
 export function TransactionsPage () {
   const { data } = useQuery(GET_TRANSACTIONS, { pollInterval: 200 })
   const [editTransaction] = useMutation(EDIT_TRANSACTION)
@@ -13,13 +14,11 @@ export function TransactionsPage () {
 
   useEffect(() => {
     if (data && data.transactions) {
-      console.log(data.transactions)
       setTransactions(data.transactions)
     }
   }, [data])
 
   function handleEditTransaction (transaction) {
-    console.log(transaction)
     editTransaction({ variables: generateVariables(transaction) })
   }
 
@@ -51,10 +50,11 @@ export function TransactionsPage () {
               <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
               <td>{transaction.merchant.name}</td>
               <td>{transaction.description}</td>
-              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount }</td>
-
-              <td><button onClick={() => handleEditTransaction(transaction)}>Edit</button></td>
-              <td><button onClick={() => handleRemoveTransaction(transaction)}>Remove</button></td>
+              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount / 100 }</td>
+              <td>
+                <PencilSquare className='action-btn' onClick={() => handleEditTransaction(transaction)} size='40' />
+                <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='40' />
+              </td>
 
             </tr>
           ))}
@@ -82,7 +82,10 @@ tr:nth-child(even) {background-color: lightgray;}
   color: #a10005
 }
 
-.action-btns {
-  margin-left:120px;
+.action-btn {
+  padding:10px;
+  :hover {
+    {cursor: pointer;}
+  }
 }
 `
