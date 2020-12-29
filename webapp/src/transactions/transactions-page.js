@@ -1,10 +1,12 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import { GET_TRANSACTIONS } from '../queries/transaction-queries'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import { GET_TRANSACTIONS, EDIT_TRANSACTION, DELETE_TRANSACTION } from '../queries/transaction-queries'
 import { AddTransaction } from './add-transactions'
 
 export function TransactionsPage () {
   const { data } = useQuery(GET_TRANSACTIONS)
+  const [editTransaction] = useMutation(EDIT_TRANSACTION)
+  const [deleteTransaction] = useMutation(DELETE_TRANSACTION)
 
   const [transactions, setTransactions] = useState([])
 
@@ -13,6 +15,14 @@ export function TransactionsPage () {
       setTransactions(data.transactions)
     }
   }, [data])
+
+  function handleEditTransaction (transaction) {
+    editTransaction({ variables: transaction })
+  }
+
+  function handleRemoveTransaction (transaction) {
+    deleteTransaction({ variables: transaction })
+  }
 
   return (
     <Fragment>
@@ -34,7 +44,10 @@ export function TransactionsPage () {
               <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
               <td>{transaction.merchant.name}</td>
               <td>{transaction.description}</td>
-              <td>{(transaction.credit ? '+' : transaction.debit ? '-' : '') + transaction.amount }</td>
+              <td>{(transaction.credit ? '+$' : transaction.debit ? '-$' : '') + transaction.amount / 100 }</td>
+              <td><button onClick={() => handleEditTransaction(transaction)}>Edit</button></td>
+              <td><button onClick={() => handleRemoveTransaction(transaction)}>Remove</button></td>
+
             </tr>
           ))}
         </tbody>
