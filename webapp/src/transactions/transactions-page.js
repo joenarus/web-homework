@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_TRANSACTIONS } from '../queries/transaction-queries'
 import { AddTransaction } from './add-transactions'
+import { EditableTransactions } from './editable-transactions'
 
 export function TransactionsPage () {
   const { data } = useQuery(GET_TRANSACTIONS)
@@ -19,7 +20,8 @@ export function TransactionsPage () {
       <h2>Transactions</h2>
       <AddTransaction />
       <h3>Past Transactions</h3>
-      <table>
+      <EditableTransactions transactionList={transactions} />
+      {/* <table>
         <thead>
           <tr>
             <th>User</th>
@@ -34,11 +36,11 @@ export function TransactionsPage () {
               <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
               <td>{transaction.merchant.name}</td>
               <td>{transaction.description}</td>
-              <td>{(transaction.credit ? '+' : transaction.debit ? '-' : '') + transaction.amount }</td>
+              <td>{(transaction.credit ? '+' : transaction.debit ? '-' : '') + '$' + (transaction.amount / 100) }</td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> */}
     </Fragment>
   )
 }
