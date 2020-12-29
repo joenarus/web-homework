@@ -33,7 +33,7 @@ export function AddTransaction () {
     }
   }, [merchantData.data, userData.data])
 
-  const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
+  const [currentTransaction, setCurrentTransaction] = useState({ amount: 0, user: '', merchant: '', description: '', credit: false, debit: false })
 
   const handleInputChange = event => {
     const target = event.target
@@ -47,7 +47,7 @@ export function AddTransaction () {
     event.preventDefault()
     createTransaction({ variables: currentTransaction })
     // Query will go here
-    setCurrentTransaction({ amount: null, user: null, merchant: null, description: null, credit: false, debit: false })
+    setCurrentTransaction({ amount: 0, user: undefined, merchant: undefined, description: undefined, credit: undefined, debit: undefined })
   }
 
   return (
@@ -65,25 +65,25 @@ export function AddTransaction () {
         </label>
         <label>
       Amount
-          <input name='amount' onChange={handleInputChange} type='number' value={currentTransaction.amount} />
+          <input name='amount' onChange={handleInputChange} type='number' />
         </label>
         <label>
       User
-          <select name='user' onBlur={handleInputChange} onChange={handleInputChange} required value={currentTransaction.user}>
+          <select name='user' onBlur={handleInputChange} onChange={handleInputChange} required>
             <option value={null}>None</option>
             {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
           </select>
         </label>
         <label>
       Merchant
-          <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={currentTransaction.merchant}>
+          <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required>
             <option value={null}>None</option>
-            {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
+            {merchants.map((merchant) => <option key={merchant.id}>{merchant.name}</option>)}
           </select>
         </label>
         <label>
       Description
-          <input name='description' onChange={handleInputChange} type='text' value={currentTransaction.description} />
+          <input name='description' onChange={handleInputChange} type='text' />
         </label>
         <input type='submit' value='Save' />
 

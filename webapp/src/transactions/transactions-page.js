@@ -13,16 +13,22 @@ export function TransactionsPage () {
 
   useEffect(() => {
     if (data && data.transactions) {
+      console.log(data.transactions)
       setTransactions(data.transactions)
     }
   }, [data])
 
   function handleEditTransaction (transaction) {
-    editTransaction({ variables: transaction })
+    console.log(transaction)
+    editTransaction({ variables: generateVariables(transaction) })
   }
 
   function handleRemoveTransaction (transaction) {
-    deleteTransaction({ variables: transaction })
+    deleteTransaction({ variables: generateVariables(transaction) })
+  }
+
+  function generateVariables (transaction) {
+    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id }
   }
 
   return (
@@ -39,15 +45,17 @@ export function TransactionsPage () {
             <th>Amount</th>
           </tr>
         </thead>
-        <tbody css={transactionRow}>
+        <tbody css={transactionBody}>
           {transactions.map(transaction => (
             <tr className='transaction' key={transaction.id}>
               <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
               <td>{transaction.merchant.name}</td>
               <td>{transaction.description}</td>
-              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+$' : transaction.debit ? '-$' : '') + transaction.amount / 100 }</td>
+              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount }</td>
+
               <td><button onClick={() => handleEditTransaction(transaction)}>Edit</button></td>
               <td><button onClick={() => handleRemoveTransaction(transaction)}>Remove</button></td>
+
             </tr>
           ))}
         </tbody>
@@ -60,7 +68,10 @@ const transactionTable = css`
   width: 100%;
 `
 
-const transactionRow = css`
+const transactionBody = css`
+tr {
+  height: 80px;
+}
 tr:nth-child(even) {background-color: lightgray;}
 
 .credit {
@@ -69,5 +80,9 @@ tr:nth-child(even) {background-color: lightgray;}
 
 .debit {
   color: #a10005
+}
+
+.action-btns {
+  margin-left:120px;
 }
 `

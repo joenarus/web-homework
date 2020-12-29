@@ -10,10 +10,12 @@ export const GET_TRANSACTIONS = gql`
             credit
             debit
             user {
+                id
                 firstName
                 lastName
             }
             merchant {
+                id
                 name
             }
         }
@@ -56,6 +58,7 @@ export const DELETE_TRANSACTION = gql`
 
 export const EDIT_TRANSACTION = gql`
     mutation(
+        $id: ID!,
         $amount: Int!, 
         $debit: Boolean!, 
         $credit: Boolean!, 
@@ -64,6 +67,7 @@ export const EDIT_TRANSACTION = gql`
         $user: ID!
     ){
         updateTransaction(
+            id: $id,
             amount: $amount, 
             description: $description, 
             credit: $credit, 
