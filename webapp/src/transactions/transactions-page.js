@@ -19,11 +19,11 @@ export function TransactionsPage () {
   }, [data])
 
   function handleEditTransaction (transaction) {
-    editTransaction({ variables: generateVariables(transaction) })
+    editTransaction({ variables: generateVariables({ ...transaction }) })
   }
 
   function handleRemoveTransaction (transaction) {
-    deleteTransaction({ variables: generateVariables(transaction) })
+    deleteTransaction({ variables: generateVariables({ ...transaction }) })
   }
 
   function generateVariables (transaction) {
@@ -55,7 +55,6 @@ export function TransactionsPage () {
                 <PencilSquare className='action-btn' onClick={() => handleEditTransaction(transaction)} size='40' />
                 <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='40' />
               </td>
-
             </tr>
           ))}
         </tbody>
