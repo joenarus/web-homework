@@ -8,14 +8,15 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     """
     def get_available_credit(company) do
         transactions = Transactions.get_transactions_company!(company.id)
-        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), acc -> transaction.amount + acc end))
+        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), acc -> company.credit_line - round(transaction.amount/100) + acc end))
     end
 
     @doc """
     Get a list of companies
     """
     def companies(_root, args, _info) do
-      {:ok, Companies.list_companies(args)}
+      companies = Enum.map(Companies.list_companies(args), &get_available_credit/1)
+      {:ok, companies}
     end
   
     @doc """
