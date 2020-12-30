@@ -72,7 +72,8 @@ transaction_data = [
         debit: false,
         description: "Return of product",
         merchant_id: "5fbbe294-1d59-4f5b-864a-6fd08f7656cb",
-        user_id: "127233f3-f07c-4ae8-ae1b-cd9cfb0cebc9"
+        user_id: "127233f3-f07c-4ae8-ae1b-cd9cfb0cebc9",
+        company_id: "6bdd7d17-8e75-4704-99ae-c54d49158e0f"
     },
     %{
         id: "40754a8d-be15-4c43-85d4-eb8157c109b4",
@@ -81,7 +82,8 @@ transaction_data = [
         debit: true,
         description: "Groceries",
         merchant_id: "dd141601-6627-4e40-8b63-3727d18d1f0c",
-        user_id: "831c49c2-dc45-4267-940f-b350e3ccdeda"
+        user_id: "831c49c2-dc45-4267-940f-b350e3ccdeda",
+        company_id: "6ff816f8-091f-4245-8cae-9eb397a11b0d"
     }
 ];
 company_data = [
@@ -113,7 +115,17 @@ Enum.each(merchant_data, fn(data) ->
 end)
 
 Enum.each(transaction_data, fn(data) -> 
-    Homework.Repo.insert!(%Transaction{id: data.id, amount: data.amount, debit: data.debit, credit: data.credit, description: data.description, merchant_id: data.merchant_id, user_id: data.user_id},
+    Homework.Repo.insert!(%Transaction
+    {
+        id: data.id, 
+        amount: data.amount, 
+        debit: data.debit, 
+        credit: data.credit, 
+        description: data.description, 
+        merchant_id: data.merchant_id, 
+        user_id: data.user_id,
+        company_id: data.company_id
+    },
     on_conflict: :nothing)
 end)
 

@@ -7,8 +7,8 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     Calculates available credit of company based on list of transactions
     """
     def get_available_credit(company) do
-        transactions = Transactions.get_transaction!(company.id)
-        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction) acc -> transaction.amount + acc end))
+        transactions = Transactions.get_transactions_company!(company.id)
+        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), acc -> transaction.amount + acc end))
     end
 
     @doc """
@@ -24,7 +24,7 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     def create_company(_root, args, _info) do
       case Companies.create_company(args) do
         {:ok, company} ->
-          {:ok, company}
+          {:ok, get_available_credit(company)}
   
         error ->
           {:error, "could not create company: #{inspect(error)}"}
@@ -39,7 +39,7 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
   
       case Companies.update_company(company, args) do
         {:ok, company} ->
-          {:ok, company}
+          {:ok, get_available_credit(company)}
   
         error ->
           {:error, "could not update company: #{inspect(error)}"}
