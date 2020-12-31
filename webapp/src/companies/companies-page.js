@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { GET_COMPANIES, DELETE_COMPANY } from '../queries/company-queries'
+import { AddCompanies } from './add-companies'
 import { css } from '@emotion/core'
 import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
 import { Trash } from '@emotion-icons/bootstrap/Trash'
@@ -22,6 +23,7 @@ export function CompaniesPage () {
   return (
     <Fragment>
       <h2>Add Company</h2>
+      <AddCompanies />
       <h3>Companies</h3>
       <table css={transactionTable}>
         <thead>

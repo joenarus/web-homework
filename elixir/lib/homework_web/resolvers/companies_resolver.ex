@@ -8,7 +8,7 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     end
     
     def convert_to_cents(company) do
-        %{company | available_credit: company.available_credit * 100, credit_line: company.credit_line * 100}
+        %{company | credit_line: round(company.credit_line * 100)}
     end
     @doc """
     Calculates available credit of company based on list of transactions

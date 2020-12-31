@@ -11,18 +11,14 @@ export const GET_COMPANIES = gql`
     }
 `
 
-export const ADD_TRANSACTION = gql`
+export const ADD_COMPANY = gql`
     mutation(
         $name: String!, 
         $creditLine: Float!
     ){
-        createTransaction(
-            amount: $amount, 
-            description: $description, 
-            credit: $credit, 
-            debit: $debit,
-            merchantId: $merchant, 
-            userId: $user
+        createCompany(
+            name: $name, 
+            creditLine: $creditLine
         ){
             id
         }
