@@ -37,6 +37,12 @@ defmodule Homework.Transactions do
   """
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
+  def get_transactions_company!(company_id) do
+    Repo.all(from t in Transaction,
+              where: t.company_id == ^company_id)
+  end
+
+
   @doc """
   Creates a transaction.
 
