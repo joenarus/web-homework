@@ -100,17 +100,34 @@ company_data = [
 ];
 
 Enum.each(company_data, fn(data) -> 
-    Homework.Repo.insert!(%Company{id: data.id, name: data.name, credit_line: data.credit_line},
+    Homework.Repo.insert!(%Company
+    {
+        id: data.id, 
+        name: data.name, 
+        credit_line: data.credit_line
+    },
     on_conflict: :nothing)
 end)
 
 Enum.each(user_data, fn(data) -> 
-    Homework.Repo.insert!(%User{id: data.id, dob: data.dob, first_name: data.first_name, last_name: data.last_name, company_id: data.company_id},
+    Homework.Repo.insert!(%User
+    {
+        id: data.id, 
+        dob: data.dob, 
+        first_name: data.first_name, 
+        last_name: data.last_name, 
+        company_id: data.company_id
+    },
     on_conflict: :nothing)
 end)
 
 Enum.each(merchant_data, fn(data) -> 
-    Homework.Repo.insert!(%Merchant{id: data.id, name: data.name, description: data.description},
+    Homework.Repo.insert!(%Merchant
+    {
+        id: data.id, 
+        name: data.name, 
+        description: data.description
+    },
     on_conflict: :nothing)
 end)
 
