@@ -67,7 +67,7 @@ merchant_data = [
 transaction_data = [
     %{
         id: "6ad67dea-0ca8-4b75-84e0-0ce702a7e611",
-        amount: 1234,
+        amount: 123456,
         credit: true,
         debit: false,
         description: "Return of product",
@@ -77,7 +77,7 @@ transaction_data = [
     },
     %{
         id: "40754a8d-be15-4c43-85d4-eb8157c109b4",
-        amount: 25000,
+        amount: 2500065,
         credit: false,
         debit: true,
         description: "Groceries",
