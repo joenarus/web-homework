@@ -6,6 +6,9 @@ export const GET_USERS = gql`
             id
             firstName
             lastName
+            company {
+                id
+            }
         }
     }
 `

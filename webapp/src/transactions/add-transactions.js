@@ -4,19 +4,6 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { GET_MERCHANTS } from '../queries/merchant-queries'
 import { GET_USERS } from '../queries/user-queries'
 import { ADD_TRANSACTION } from '../queries/transaction-queries'
-// import { GET_USERS } from '../queries/user-queries'
-
-// const useUserState = () => {
-//   const { userData } = useQuery(GET_USERS)
-//   const [users, setUsers] = useState([])
-//   useEffect(() => {
-//     if (userData && userData.users) {
-//       console.log(userData)
-//       setUsers(userData.users)
-//     }
-//   }, [userData])
-//   return { users }
-// }
 
 export function AddTransaction () {
   const [merchants, setMerchants] = useState([])
@@ -33,13 +20,21 @@ export function AddTransaction () {
     }
   }, [merchantData.data, userData.data])
 
-  const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
+  const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', company: '', merchant: '', description: '', credit: false, debit: false })
 
   const handleInputChange = event => {
     const target = event.target
-    const value = target.type === 'radio' ? target.checked : target.name === 'amount' ? parseInt(target.value) : target.value
+    const value = target.type === 'radio' ? target.checked : target.name === 'amount' ? parseFloat(target.value) : target.value
     const name = target.type === 'radio' ? target.value : target.name
     const transaction = { ...currentTransaction, [name]: value }
+    setCurrentTransaction(transaction)
+  }
+
+  const handleUserChange = event => {
+    const target = event.target
+    const user = users.find(u => u.id === target.value)
+    const transaction = { ...currentTransaction, user: target.value, company: user.company.id }
+    console.log(transaction)
     setCurrentTransaction(transaction)
   }
 
@@ -47,7 +42,7 @@ export function AddTransaction () {
     event.preventDefault()
     createTransaction({ variables: currentTransaction })
     // Query will go here
-    setCurrentTransaction({ amount: '', user: '', merchant: '', description: '', credit: false, debit: false })
+    setCurrentTransaction({ amount: '', user: '', merchant: '', company: '', description: '', credit: false, debit: false })
   }
 
   return (
@@ -64,11 +59,11 @@ export function AddTransaction () {
       </label>
       <label>
       Amount
-        <input name='amount' onChange={handleInputChange} type='number' value={currentTransaction.amount} />
+        <input name='amount' onChange={handleInputChange} step='0.01' type='number' value={currentTransaction.amount} />
       </label>
       <label>
       User
-        <select name='user' onBlur={handleInputChange} onChange={handleInputChange} required value={currentTransaction.user}>
+        <select name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={currentTransaction.user}>
           <option value={null}>None</option>
           {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
         </select>

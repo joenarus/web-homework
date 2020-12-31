@@ -15,7 +15,18 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     """
     def get_available_credit(company) do
         transactions = Transactions.get_transactions_company!(company.id)
-        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), total_amount -> if transaction.debit do company.credit_line - transaction.amount + total_amount else company.credit_line + transaction.amount + total_amount end end))
+        amount_spent = Enum.reduce(
+            transactions, 
+            0, 
+            fn(transaction), 
+            total_amount -> 
+                if transaction.debit do 
+                    total_amount - transaction.amount 
+                else total_amount + transaction.amount 
+            end 
+        end) 
+
+        Map.put(company, :available_credit, company.credit_line + amount_spent)
     end
 
     @doc """
