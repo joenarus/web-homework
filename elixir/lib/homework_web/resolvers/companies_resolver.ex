@@ -2,6 +2,14 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     alias Homework.Companies
     alias Homework.Transactions
 
+
+    def convert_to_dollar(company) do
+        %{company | available_credit: company.available_credit / 100, credit_line: company.credit_line / 100}
+    end
+    
+    def convert_to_cents(company) do
+        %{company | available_credit: company.available_credit * 100, credit_line: company.credit_line * 100}
+    end
     @doc """
     Calculates available credit of company based on list of transactions
     """
@@ -15,14 +23,15 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     """
     def companies(_root, args, _info) do
       companies = Enum.map(Companies.list_companies(args), &get_available_credit/1)
-      {:ok, companies}
+      
+      {:ok, Enum.map(companies, &convert_to_dollar/1)}
     end
   
     @doc """
     Create a new company
     """
     def create_company(_root, args, _info) do
-      case Companies.create_company(args) do
+      case Companies.create_company(convert_to_cents(args)) do
         {:ok, company} ->
           {:ok, get_available_credit(company)}
   
@@ -37,7 +46,7 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     def update_company(_root, %{id: id} = args, _info) do
       company = Companies.get_company!(id)
   
-      case Companies.update_company(company, args) do
+      case Companies.update_company(company, convert_to_cents(args)) do
         {:ok, company} ->
           {:ok, get_available_credit(company)}
   
