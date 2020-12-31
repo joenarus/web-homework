@@ -1,14 +1,13 @@
 defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     alias Homework.Companies
     alias Homework.Transactions
-  
 
     @doc """
     Calculates available credit of company based on list of transactions
     """
     def get_available_credit(company) do
         transactions = Transactions.get_transactions_company!(company.id)
-        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), acc -> company.credit_line - round(transaction.amount/100) + acc end))
+        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), total_amount -> if transaction.debit do company.credit_line - round(transaction.amount/100) + total_amount else company.credit_line + round(transaction.amount/100) + total_amount end end))
     end
 
     @doc """
