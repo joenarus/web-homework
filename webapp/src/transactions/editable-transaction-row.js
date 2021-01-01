@@ -6,6 +6,8 @@ import { Trash } from '@emotion-icons/bootstrap/Trash'
 import PropTypes from 'prop-types'
 import { css } from '@emotion/core'
 import { TransactionForm } from './transaction-form'
+import { settings } from '../settings/settings'
+import { convertToRoman } from '../helpers/roman-numeral.util'
 
 EditableTransactionRow.propTypes = {
   transaction: PropTypes.object.isRequired,
@@ -35,9 +37,27 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
     setEditing(false)
   }
 
+  function checkForRomanNumeral (amount) {
+    console.log(amount)
+    const decimalAmount = parseFloat(transaction.amount).toFixed(2)
+    let result = ''
+    if (!settings.romanNumeralsActive) {
+      result += amount
+    } else {
+      if (settings.romanNumeralDecimal) {
+        const str = decimalAmount.toString()
+        const array = str.split('.')
+        result += convertToRoman(parseInt(array[0])) + '.'
+        result += convertToRoman(parseInt(array[1]))
+      } else {
+        result += convertToRoman(decimalAmount)
+      }
+    }
+    return result
+  }
+
   return (
     <Fragment>
-
       {!editing ? (
         <Fragment>
           <div className='transaction-row' css={transactionRow} key={transaction.id}>
@@ -53,11 +73,11 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
               </p>
             </div>
             <div className={(transaction.credit ? 'credit' : 'debit') + ' transaction-cell'}>
-              {(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + parseFloat(transaction.amount).toFixed(2) }
+              {(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + checkForRomanNumeral(transaction.amount) }
             </div>
             <div className='action-btn'>
-              <PencilSquare className='action-btn' onClick={() => setEditing(true)} size='25' />
-              <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='25' />
+              <PencilSquare className='action-btn' onClick={() => setEditing(true)} size='40' />
+              <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='40' />
             </div>
           </div>
         </Fragment>
@@ -95,27 +115,7 @@ const transactionRow = css`
         padding-left: 12px;
         display: flex;
         flex-direction: row;
-        font-size: 20px;
-        .debit-credit {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            font-size: 12px;
-        }
-        .amount {
-            padding-left: 12px;
-            font-size: 20px;
-        }
-        select {
-            width: 100%;
-            height: 30px;
-            font-size: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 30px;
-            font-size: 16px;
-        }
+        font-size: 18px;
     }
     .description {
         word-break: break-all 

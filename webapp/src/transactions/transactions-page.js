@@ -32,7 +32,7 @@ export function TransactionsPage () {
       <div css={transactionMainBody}>
         <div className='transaction-header'>
           <div className='transaction-header-cell'>
-            <h3>User</h3>
+            <h5>User</h5>
           </div>
           <div className='transaction-header-cell'>
             <h3>Vendor</h3>
@@ -62,11 +62,12 @@ const transactionMainBody = css`
   .transaction-header {
     display: flex;
     align-items:center;
-    alight-content: space-between
+    alight-content: space-between;
+    flex-wrap: nowrap;
   }
   .transaction-header-cell {
     width: 100px;
-    flex: 1;
+    flex: 1 2;
     padding-left: 12px;
     display: flex;
     flex-direction: row;
@@ -75,25 +76,3 @@ const transactionMainBody = css`
     padding-right: 12px;
   }
 `
-
-// const transactionBody = css`
-// tr {
-//   height: 80px;
-// }
-// tr:nth-child(even) {background-color: lightgray;}
-
-// .credit {
-//   color: #008525
-// }
-
-// .debit {
-//   color: #a10005
-// }
-
-// .action-btn {
-//   padding:10px;
-//   :hover {
-//     {cursor: pointer;}
-//   }
-// }
-// `
