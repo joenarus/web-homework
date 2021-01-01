@@ -1,18 +1,28 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_TRANSACTIONS } from '../queries/transaction-queries'
+import { GET_USERS } from '../queries/user-queries'
 import { AddTransaction } from './add-transactions'
 import { EditableTransactionRow } from './editable-transaction-row'
 import { css } from '@emotion/core'
+import { GET_MERCHANTS } from '../queries/merchant-queries'
 export function TransactionsPage () {
   const { data } = useQuery(GET_TRANSACTIONS, { pollInterval: 200 })
+  const userData = useQuery(GET_USERS)
+  const merchantData = useQuery(GET_MERCHANTS)
   const [transactions, setTransactions] = useState([])
+  const [users, setUsers] = useState([])
+  const [merchants, setMerchants] = useState([])
 
   useEffect(() => {
     if (data && data.transactions) {
       setTransactions(data.transactions)
+    } if (userData.data && userData.data.users) {
+      setUsers(userData.data.users)
+    } if (merchantData.data && merchantData.data.merchants) {
+      setMerchants(merchantData.data.merchants)
     }
-  }, [data])
+  }, [data, userData, merchantData])
 
   return (
     <Fragment>
@@ -22,7 +32,7 @@ export function TransactionsPage () {
 
       <div css={transactionMainBody}>
         {transactions.map(transaction => (
-          <EditableTransactionRow key={transaction.id} transaction={transaction} />
+          <EditableTransactionRow key={transaction.id} merchants={merchants} transaction={transaction} users={users} />
         ))}
 
       </div>

@@ -8,53 +8,49 @@ import PropTypes from 'prop-types'
 import { css } from '@emotion/core'
 
 EditableTransactionRow.propTypes = {
-  transaction: PropTypes.object.isRequired
+  transaction: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired,
+  merchants: PropTypes.array.isRequired
 }
 
-export function EditableTransactionRow ({ transaction }) {
+export function EditableTransactionRow ({ merchants, transaction, users }) {
   const [editTransaction] = useMutation(EDIT_TRANSACTION)
   const [deleteTransaction] = useMutation(DELETE_TRANSACTION)
 
   const [editing, setEditing] = useState(false)
 
-  const [currentChanges, setCurrentChanges] = useState({ ...transaction })
+  const [currentChanges, setCurrentChanges] = useState(generateUserAndMerchantData({ ...transaction }))
 
-  function handleEditTransaction (transaction) {
-    editTransaction({ variables: generateVariables({ ...transaction }) })
-    setEditing(false)
+  function generateUserAndMerchantData (transaction) {
+    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id }
   }
 
   function handleRemoveTransaction (transaction) {
-    deleteTransaction({ variables: generateVariables({ ...transaction }) })
-  }
-
-  function generateVariables (transaction) {
-    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id, company: transaction.company.id }
+    deleteTransaction({ variables: { ...transaction } })
   }
 
   const handleSubmit = event => {
     event.preventDefault()
-    handleEditTransaction(currentChanges)
+    editTransaction({ variables: { ...currentChanges } })
+    setEditing(false)
   }
 
   const handleUserChange = event => {
-    console.log(event)
-    // const target = event.target
-    // const user = users.find(u => u.id === target.value)
-    // const newTransaction = { ...transaction, user: target.value, company: user.company.id }
-    // console.log(newTransaction)
+    const target = event.target
+    const user = users.find(u => u.id === target.value)
+    const newTransaction = { ...currentChanges, user: target.value, company: user.company.id }
+    setCurrentChanges(newTransaction)
   }
 
   const handleRadioChange = event => {
     const target = event.target
-    let transaction
+    let newTransaction
     if (target.value === 'credit') {
-      transaction = { ...currentChanges, credit: true, debit: false }
+      newTransaction = { ...currentChanges, credit: true, debit: false }
     } else {
-      transaction = { ...currentChanges, credit: false, debit: true }
+      newTransaction = { ...currentChanges, credit: false, debit: true }
     }
-    console.log(transaction)
-    setCurrentChanges(transaction)
+    setCurrentChanges(newTransaction)
   }
 
   const handleInputChange = event => {
@@ -97,7 +93,7 @@ export function EditableTransactionRow ({ transaction }) {
               <label>
                 <select name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={currentChanges.user}>
                   <option value={null}>None</option>
-                  {/* {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)} */}
+                  {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
                 </select>
               </label>
             </div>
@@ -105,7 +101,7 @@ export function EditableTransactionRow ({ transaction }) {
               <label>
                 <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={currentChanges.merchant}>
                   <option value={null}>None</option>
-                  {/* {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)} */}
+                  {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
                 </select>
               </label>
             </div>
