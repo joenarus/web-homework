@@ -48,6 +48,10 @@ const layoutStyle = css`
   display: grid;
   grid-row-gap: 24px;
   padding: 8px;
+
+  .page-title {
+    justify-content:
+  }
 `
 
 const navStyle = css`

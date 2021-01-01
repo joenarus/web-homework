@@ -1,26 +1,20 @@
 
-import React, { useState, useEffect } from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import { GET_MERCHANTS } from '../queries/merchant-queries'
-import { GET_USERS } from '../queries/user-queries'
+import React, { useState, Fragment } from 'react'
+import { useMutation } from '@apollo/react-hooks'
 import { ADD_TRANSACTION } from '../queries/transaction-queries'
+import { css } from '@emotion/core'
+import PropTypes from 'prop-types'
+import { CancelPresentation } from '@emotion-icons/material-rounded/CancelPresentation'
 
-export function AddTransaction () {
-  const [merchants, setMerchants] = useState([])
-  const [users, setUsers] = useState([])
-  const merchantData = useQuery(GET_MERCHANTS)
-  const userData = useQuery(GET_USERS)
+AddTransaction.propTypes = {
+  users: PropTypes.array.isRequired,
+  merchants: PropTypes.array.isRequired
+}
+
+export function AddTransaction ({ merchants, users }) {
   const [createTransaction] = useMutation(ADD_TRANSACTION)
-
-  useEffect(() => {
-    if (merchantData.data && merchantData.data.merchants) {
-      setMerchants(merchantData.data.merchants)
-    } if (userData.data && userData.data.users) {
-      setUsers(userData.data.users)
-    }
-  }, [merchantData.data, userData.data])
-
-  const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', company: '', merchant: '', description: '', credit: false, debit: false })
+  const [editing, setEditing] = useState(false)
+  const [currentTransaction, setCurrentTransaction] = useState({ amount: '', user: '', company: '', merchant: '', description: '', credit: false, debit: true })
 
   const handleInputChange = event => {
     const target = event.target
@@ -51,44 +45,138 @@ export function AddTransaction () {
   const handleSubmit = event => {
     event.preventDefault()
     createTransaction({ variables: currentTransaction })
+    setEditing(false)
     // Query will go here
-    setCurrentTransaction({ amount: '', user: '', merchant: '', company: '', description: '', credit: false, debit: false })
+    setCurrentTransaction({ amount: '', user: '', merchant: '', company: '', description: '', credit: false, debit: true })
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Add Transaction</h3>
-      <label>
-      Debit
-        <input name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
-      </label>
-      <label>
-      Credit
-        <input name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
-      </label>
-      <label>
-      Amount
-        <input name='amount' onChange={handleInputChange} step='0.01' type='number' value={currentTransaction.amount} />
-      </label>
-      <label>
-      User
-        <select name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={currentTransaction.user}>
-          <option value={null}>None</option>
-          {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
-        </select>
-      </label>
-      <label>
-      Merchant
-        <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={currentTransaction.merchant}>
-          <option value={null}>None</option>
-          {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
-        </select>
-      </label>
-      <label>
-      Description
-        <input name='description' onChange={handleInputChange} type='text' value={currentTransaction.description} />
-      </label>
-      <input type='submit' value='Save' />
-    </form>
+    <Fragment>
+      <div>
+        {!editing ? (
+          <Fragment>
+            <button onClick={() => setEditing(true)}>Add New Transaction</button>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <div css={transactionHeader}>
+              <div className='transaction-header'>
+                <div className='transaction-header-cell'>
+                  <h3>User</h3>
+                </div>
+                <div className='transaction-header-cell'>
+                  <h3>Vendor</h3>
+                </div>
+                <div className='transaction-header-cell'>
+                  <h3>Description</h3>
+                </div>
+                <div className=' transaction-header-cell'>
+                  <h3>Amount</h3>
+                </div>
+              </div>
+            </div>
+            <form>
+              <div className='transaction-row' css={addableTransaction}>
+                <div className='transaction-cell'>
+                  <select name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={currentTransaction.user}>
+                    <option value={null}>None</option>
+                    {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
+                  </select>
+                </div>
+                <div className='transaction-cell'>
+                  <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={currentTransaction.merchant}>
+                    <option value={null}>None</option>
+                    {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
+                  </select>
+                </div>
+                <div className='transaction-cell'>
+                  <textarea name='description' onChange={handleInputChange} type='textbox' value={currentTransaction.description} />
+                </div>
+                <div className='transaction-cell'>
+                  <div className='debit-credit'>
+                    <label>
+                    Debit
+                      <input checked={currentTransaction.debit} name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
+                    </label>
+                    <label>
+                    Credit
+                      <input checked={currentTransaction.credit} name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
+                    </label>
+                  </div>
+                  <input className={'amount ' + (currentTransaction.credit ? 'credit' : 'debit')} name='amount' onChange={handleInputChange} step='0.01' type='number' value={currentTransaction.amount} />
+                </div>
+                <input onClick={handleSubmit} type='submit' value='Save' />
+                <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='25' />
+              </div>
+            </form>
+          </Fragment>
+        )
+        }
+      </div>
+    </Fragment>
   )
 }
+
+const transactionHeader = css`
+.transaction-header {
+  width: 75%;
+  display: flex;
+  align-items:center;
+  alight-content: space-between
+}
+.transaction-header-cell {
+  flex: 1;
+  padding-left: 12px;
+  display: flex;
+  flex-direction: row;
+}
+`
+
+const addableTransaction = css`
+    {   width: 75%;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items:center;
+        alight-content: space-between;
+        
+    }
+    
+    .transaction-cell {
+      width: 100px;
+      flex: 1 2;
+      padding-left: 12px;
+      display: flex;
+      flex-direction: row;
+      font-size: 20px;
+      .debit-credit {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          font-size: 12px;
+      }
+      .amount {
+          padding-left: 12px;
+          font-size: 20px;
+      }
+      select {
+          width: 100%;
+          height: 30px;
+          font-size: 20px;
+      }
+      textarea {
+          width: 100%;
+          height: 30px;
+          font-size: 16px;
+      }
+  }
+  .description {
+      word-break: break-all 
+  }
+  .credit {
+      color: #008525
+  }
+      
+  .debit {
+      color: #a10005
+  }
+`

@@ -26,15 +26,32 @@ export function TransactionsPage () {
 
   return (
     <Fragment>
-      <h2>Transactions</h2>
-      <AddTransaction />
-      <h3>Past Transactions</h3>
-
+      <h1>Transactions</h1>
+      <AddTransaction merchants={merchants} users={users} />
+      <h2>Past Transactions</h2>
       <div css={transactionMainBody}>
-        {transactions.map(transaction => (
-          <EditableTransactionRow key={transaction.id} merchants={merchants} transaction={transaction} users={users} />
-        ))}
-
+        <div className='transaction-header'>
+          <div className='transaction-header-cell'>
+            <h3>User</h3>
+          </div>
+          <div className='transaction-header-cell'>
+            <h3>Vendor</h3>
+          </div>
+          <div className='transaction-header-cell'>
+            <h3>Description</h3>
+          </div>
+          <div className=' transaction-header-cell'>
+            <h3>Amount</h3>
+          </div>
+          <div className='transaction-header-actions'>
+            <h3>Actions</h3>
+          </div>
+        </div>
+        <div className='transaction-list'>
+          {transactions.map(transaction => (
+            <EditableTransactionRow key={transaction.id} merchants={merchants} transaction={transaction} users={users} />
+          ))}
+        </div>
       </div>
     </Fragment>
   )
@@ -42,6 +59,21 @@ export function TransactionsPage () {
 
 const transactionMainBody = css`
   width: 100%;
+  .transaction-header {
+    display: flex;
+    align-items:center;
+    alight-content: space-between
+  }
+  .transaction-header-cell {
+    width: 100px;
+    flex: 1;
+    padding-left: 12px;
+    display: flex;
+    flex-direction: row;
+  }
+  .transaction-header-actions {
+    padding-right: 12px;
+  }
 `
 
 // const transactionBody = css`

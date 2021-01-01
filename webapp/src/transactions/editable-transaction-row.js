@@ -22,7 +22,7 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
   const [currentChanges, setCurrentChanges] = useState(generateUserAndMerchantData({ ...transaction }))
 
   function generateUserAndMerchantData (transaction) {
-    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id }
+    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id, company: transaction.company.id }
   }
 
   function handleRemoveTransaction (transaction) {
@@ -60,76 +60,69 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
     const newTransaction = { ...currentChanges, [name]: value }
     setCurrentChanges(newTransaction)
   }
-
-  if (!editing) {
-    return (
-      <Fragment>
-        <div className='transaction-row' css={transactionRow} key={transaction.id}>
-          <div className='transaction-cell'>
-            {transaction.user.firstName + ' ' + transaction.user.lastName}
-          </div>
-          <div className='transaction-cell'>
-            {transaction.merchant.name}
-          </div>
-          <div className='transaction-cell'>
-            {transaction.description}
-          </div>
-          <div className={(transaction.credit ? 'credit' : 'debit') + ' transaction-cell'}>
-            {(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount }
-          </div>
-          <div className='action-btn'>
-            <PencilSquare className='action-btn' onClick={() => setEditing(true)} size='20' />
-            <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='20' />
-          </div>
-        </div>
-      </Fragment>
-    )
-  } else {
-    return (
-      <Fragment>
-        <form id={transaction.id}>
-          <div className='transaction-row' css={transactionRow} key={transaction.id}>
+  return (
+    <Fragment>
+      <div className='transaction-row' css={transactionRow} key={transaction.id}>
+        {!editing ? (
+          <Fragment>
             <div className='transaction-cell'>
-              <label>
+              {transaction.user.firstName + ' ' + transaction.user.lastName}
+            </div>
+            <div className='transaction-cell'>
+              {transaction.merchant.name}
+            </div>
+            <div className='transaction-cell'>
+              <p className='description'>
+                {transaction.description}
+              </p>
+            </div>
+            <div className={(transaction.credit ? 'credit' : 'debit') + ' transaction-cell'}>
+              {(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + parseFloat(transaction.amount).toFixed(2) }
+            </div>
+            <div className='action-btn'>
+              <PencilSquare className='action-btn' onClick={() => setEditing(true)} size='25' />
+              <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='25' />
+            </div>
+          </Fragment>
+        )
+          : (
+            <Fragment>
+              <div className='transaction-cell'>
                 <select name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={currentChanges.user}>
                   <option value={null}>None</option>
                   {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
                 </select>
-              </label>
-            </div>
-            <div className='transaction-cell'>
-              <label>
+              </div>
+              <div className='transaction-cell'>
                 <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={currentChanges.merchant}>
                   <option value={null}>None</option>
                   {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
                 </select>
-              </label>
-            </div>
-            <div className='transaction-cell'>
-              <label>
-                <input name='description' onChange={handleInputChange} type='text' value={currentChanges.description} />
-              </label>
-            </div>
-            <div className='transaction-cell'>
-              <div className='debit-credit'>
-                <label>
-                    Debit
-                  <input checked={currentChanges.debit} name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
-                </label>
-                <label>
-                    Credit
-                  <input checked={currentChanges.credit} name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
-                </label>
               </div>
-              <input className={'amount ' + (currentChanges.credit ? 'credit' : 'debit')} name='amount' onChange={handleInputChange} step='0.01' type='number' value={currentChanges.amount} />
-            </div>
-            <input form={currentChanges.id} onClick={handleSubmit} type='submit' value='Save' />
-            <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='20' />
-          </div>
-        </form>
-      </Fragment>
-    )
-  }
+              <div className='transaction-cell'>
+                <textarea name='description' onChange={handleInputChange} value={currentChanges.description} />
+              </div>
+              <div className='transaction-cell'>
+                <div className='debit-credit'>
+                  <label>
+                                Debit
+                    <input checked={currentChanges.debit} name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
+                  </label>
+                  <label>
+                                Credit
+                    <input checked={currentChanges.credit} name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
+                  </label>
+                </div>
+                <input className={'amount ' + (currentChanges.credit ? 'credit' : 'debit')} name='amount' onChange={handleInputChange} step='0.01' type='number' value={currentChanges.amount} />
+              </div>
+              <input form={currentChanges.id} onClick={handleSubmit} type='submit' value='Save' />
+              <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='25' />
+            </Fragment>
+          )
+        }
+      </div>
+    </Fragment>
+  )
 }
 
 const transactionRow = css`
@@ -158,6 +151,19 @@ const transactionRow = css`
             padding-left: 12px;
             font-size: 20px;
         }
+        select {
+            width: 100%;
+            height: 30px;
+            font-size: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 30px;
+            font-size: 16px;
+        }
+    }
+    .description {
+        word-break: break-all 
     }
     .credit {
         color: #008525
