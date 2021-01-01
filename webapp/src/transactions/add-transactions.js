@@ -38,7 +38,6 @@ export function AddTransaction () {
     } else {
       transaction = { ...currentTransaction, credit: false, debit: true }
     }
-    console.log(transaction)
     setCurrentTransaction(transaction)
   }
 
@@ -46,7 +45,6 @@ export function AddTransaction () {
     const target = event.target
     const user = users.find(u => u.id === target.value)
     const transaction = { ...currentTransaction, user: target.value, company: user.company.id }
-    console.log(transaction)
     setCurrentTransaction(transaction)
   }
 

@@ -34,7 +34,7 @@ export function EditableTransactionRow ({ transaction }) {
 
   const handleSubmit = event => {
     event.preventDefault()
-    handleEditTransaction(transaction)
+    handleEditTransaction(currentChanges)
   }
 
   const handleUserChange = event => {
@@ -118,11 +118,11 @@ export function EditableTransactionRow ({ transaction }) {
               <div className='debit-credit'>
                 <label>
                     Debit
-                  <input name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
+                  <input checked={currentChanges.debit} name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
                 </label>
                 <label>
                     Credit
-                  <input name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
+                  <input checked={currentChanges.credit} name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
                 </label>
               </div>
               <input className={'amount ' + (currentChanges.credit ? 'credit' : 'debit')} name='amount' onChange={handleInputChange} step='0.01' type='number' value={currentChanges.amount} />

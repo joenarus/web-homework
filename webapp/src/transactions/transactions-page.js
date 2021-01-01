@@ -5,7 +5,7 @@ import { AddTransaction } from './add-transactions'
 import { EditableTransactionRow } from './editable-transaction-row'
 import { css } from '@emotion/core'
 export function TransactionsPage () {
-  const { data } = useQuery(GET_TRANSACTIONS)
+  const { data } = useQuery(GET_TRANSACTIONS, { pollInterval: 200 })
   const [transactions, setTransactions] = useState([])
 
   useEffect(() => {
