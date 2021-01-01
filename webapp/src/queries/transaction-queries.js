@@ -23,12 +23,13 @@ export const GET_TRANSACTIONS = gql`
 `
 export const ADD_TRANSACTION = gql`
     mutation(
-        $amount: Int!, 
+        $amount: Float!, 
         $debit: Boolean!, 
         $credit: Boolean!, 
         $description: String!, 
         $merchant: ID!, 
-        $user: ID!
+        $user: ID!,
+        $company: ID!
     ){
         createTransaction(
             amount: $amount, 
@@ -36,7 +37,8 @@ export const ADD_TRANSACTION = gql`
             credit: $credit, 
             debit: $debit,
             merchantId: $merchant, 
-            userId: $user
+            userId: $user,
+            companyId: $company
         ){
             id
         }
@@ -59,12 +61,13 @@ export const DELETE_TRANSACTION = gql`
 export const EDIT_TRANSACTION = gql`
     mutation(
         $id: ID!,
-        $amount: Int!, 
+        $amount: Float!, 
         $debit: Boolean!, 
         $credit: Boolean!, 
         $description: String!, 
         $merchant: ID!, 
-        $user: ID!
+        $user: ID!,
+        $company: ID!
     ){
         updateTransaction(
             id: $id,
@@ -73,7 +76,8 @@ export const EDIT_TRANSACTION = gql`
             credit: $credit, 
             debit: $debit,
             merchantId: $merchant, 
-            userId: $user
+            userId: $user,
+            companyId: $company
         ){
             id
         }

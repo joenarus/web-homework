@@ -10,7 +10,7 @@ defmodule HomeworkWeb.Resolvers.TransactionsResolver do
   end
 
   def convert_to_cents(transaction) do
-    %{transaction | amount: transaction.amount * 100}
+    %{transaction | amount: round(transaction.amount * 100)}
   end
 
   @doc """

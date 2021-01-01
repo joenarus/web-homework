@@ -8,14 +8,25 @@ defmodule HomeworkWeb.Resolvers.CompaniesResolver do
     end
     
     def convert_to_cents(company) do
-        %{company | available_credit: company.available_credit * 100, credit_line: company.credit_line * 100}
+        %{company | credit_line: round(company.credit_line * 100)}
     end
     @doc """
     Calculates available credit of company based on list of transactions
     """
     def get_available_credit(company) do
         transactions = Transactions.get_transactions_company!(company.id)
-        Map.put(company, :available_credit, Enum.reduce(transactions, 0, fn(transaction), total_amount -> if transaction.debit do company.credit_line - transaction.amount + total_amount else company.credit_line + transaction.amount + total_amount end end))
+        amount_spent = Enum.reduce(
+            transactions, 
+            0, 
+            fn(transaction), 
+            total_amount -> 
+                if transaction.debit do 
+                    total_amount - transaction.amount 
+                else total_amount + transaction.amount 
+            end 
+        end) 
+
+        Map.put(company, :available_credit, company.credit_line + amount_spent)
     end
 
     @doc """

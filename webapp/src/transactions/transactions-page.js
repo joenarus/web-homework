@@ -50,7 +50,7 @@ export function TransactionsPage () {
               <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
               <td>{transaction.merchant.name}</td>
               <td>{transaction.description}</td>
-              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount / 100 }</td>
+              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount }</td>
               <td>
                 <PencilSquare className='action-btn' onClick={() => handleEditTransaction(transaction)} size='40' />
                 <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='40' />
