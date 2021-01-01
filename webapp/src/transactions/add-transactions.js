@@ -24,9 +24,21 @@ export function AddTransaction () {
 
   const handleInputChange = event => {
     const target = event.target
-    const value = target.type === 'radio' ? target.checked : target.name === 'amount' ? parseFloat(target.value) : target.value
-    const name = target.type === 'radio' ? target.value : target.name
+    const value = target.name === 'amount' ? parseFloat(target.value) : target.value
+    const name = target.name
     const transaction = { ...currentTransaction, [name]: value }
+    setCurrentTransaction(transaction)
+  }
+
+  const handleRadioChange = event => {
+    const target = event.target
+    let transaction
+    if (target.value === 'credit') {
+      transaction = { ...currentTransaction, credit: true, debit: false }
+    } else {
+      transaction = { ...currentTransaction, credit: false, debit: true }
+    }
+    console.log(transaction)
     setCurrentTransaction(transaction)
   }
 
@@ -47,15 +59,14 @@ export function AddTransaction () {
 
   return (
     <form onSubmit={handleSubmit}>
-
       <h3>Add Transaction</h3>
       <label>
       Debit
-        <input name='debit-or-credit' onChange={handleInputChange} required type='radio' value='debit' />
+        <input name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
       </label>
       <label>
       Credit
-        <input name='debit-or-credit' onChange={handleInputChange} type='radio' value='credit' />
+        <input name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
       </label>
       <label>
       Amount

@@ -18,6 +18,9 @@ export const GET_TRANSACTIONS = gql`
                 id
                 name
             }
+            company {
+                id
+            }
         }
     }
 `

@@ -59,7 +59,7 @@ const navStyle = css`
     list-style-type: none;
   }
 
-  & > ul > li:not(:first-child) {
+  & > ul > li:not(:first-of-type) {
     margin-left: 16px;
   }
 `
