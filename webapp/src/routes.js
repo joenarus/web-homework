@@ -23,7 +23,7 @@ function AppRouter () {
               <Link to='/companies'>Companies</Link>
             </li>
             <li>
-              <Link to='/user'>User</Link>
+              <Link to='/user'>Users</Link>
             </li>
             <li>
               <Link to='/merchants'>Merchants</Link>
