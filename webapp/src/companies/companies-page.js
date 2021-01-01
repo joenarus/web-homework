@@ -22,9 +22,9 @@ export function CompaniesPage () {
 
   return (
     <Fragment>
-      <h2>Add Company</h2>
+      <h2>Companies</h2>
       <AddCompanies />
-      <h3>Companies</h3>
+      <h3>Companies Using This Application</h3>
       <table css={transactionTable}>
         <thead>
           <tr>

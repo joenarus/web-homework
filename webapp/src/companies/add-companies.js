@@ -18,7 +18,6 @@ export function AddCompanies () {
 
   const handleSubmit = event => {
     event.preventDefault()
-    console.log(currentCompany)
     createCompany({ variables: currentCompany })
     // Query will go here
     setCurrentCompany({ name: '', creditLine: '' })
