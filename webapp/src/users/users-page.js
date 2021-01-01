@@ -40,7 +40,7 @@ export function UsersPage () {
           <tr>
             <th>Name</th>
             <th>DOB</th>
-            <th>company</th>
+            <th>Company</th>
           </tr>
         </thead>
         <tbody css={transactionBody}>

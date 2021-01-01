@@ -1,90 +1,99 @@
 import React, { useState, Fragment, useEffect } from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
-import { GET_TRANSACTIONS, EDIT_TRANSACTION, DELETE_TRANSACTION } from '../queries/transaction-queries'
+import { useQuery } from '@apollo/react-hooks'
+import { GET_TRANSACTIONS } from '../queries/transaction-queries'
+import { GET_USERS } from '../queries/user-queries'
 import { AddTransaction } from './add-transactions'
+import { EditableTransactionRow } from './editable-transaction-row'
 import { css } from '@emotion/core'
-import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
-import { Trash } from '@emotion-icons/bootstrap/Trash'
+import { GET_MERCHANTS } from '../queries/merchant-queries'
 export function TransactionsPage () {
   const { data } = useQuery(GET_TRANSACTIONS, { pollInterval: 200 })
-  const [editTransaction] = useMutation(EDIT_TRANSACTION)
-  const [deleteTransaction] = useMutation(DELETE_TRANSACTION)
-
+  const userData = useQuery(GET_USERS)
+  const merchantData = useQuery(GET_MERCHANTS)
   const [transactions, setTransactions] = useState([])
+  const [users, setUsers] = useState([])
+  const [merchants, setMerchants] = useState([])
 
   useEffect(() => {
     if (data && data.transactions) {
       setTransactions(data.transactions)
+    } if (userData.data && userData.data.users) {
+      setUsers(userData.data.users)
+    } if (merchantData.data && merchantData.data.merchants) {
+      setMerchants(merchantData.data.merchants)
     }
-  }, [data])
-
-  function handleEditTransaction (transaction) {
-    editTransaction({ variables: generateVariables({ ...transaction }) })
-  }
-
-  function handleRemoveTransaction (transaction) {
-    deleteTransaction({ variables: generateVariables({ ...transaction }) })
-  }
-
-  function generateVariables (transaction) {
-    return { ...transaction, merchant: transaction.merchant.id, user: transaction.user.id }
-  }
+  }, [data, userData, merchantData])
 
   return (
     <Fragment>
-      <h2>Transactions</h2>
-      <AddTransaction />
-      <h3>Past Transactions</h3>
-      <table css={transactionTable}>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Merchant</th>
-            <th>Description</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody css={transactionBody}>
+      <h1>Transactions</h1>
+      <AddTransaction merchants={merchants} users={users} />
+      <h2>Past Transactions</h2>
+      <div css={transactionMainBody}>
+        <div className='transaction-header'>
+          <div className='transaction-header-cell'>
+            <h3>User</h3>
+          </div>
+          <div className='transaction-header-cell'>
+            <h3>Vendor</h3>
+          </div>
+          <div className='transaction-header-cell'>
+            <h3>Description</h3>
+          </div>
+          <div className=' transaction-header-cell'>
+            <h3>Amount</h3>
+          </div>
+          <div className='transaction-header-actions'>
+            <h3>Actions</h3>
+          </div>
+        </div>
+        <div className='transaction-list'>
           {transactions.map(transaction => (
-            <tr className='transaction' key={transaction.id}>
-              <td>{transaction.user.firstName + ' ' + transaction.user.lastName}</td>
-              <td>{transaction.merchant.name}</td>
-              <td>{transaction.description}</td>
-              <td className={transaction.credit ? 'credit' : 'debit'}>{(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + transaction.amount }</td>
-              <td>
-                <PencilSquare className='action-btn' onClick={() => handleEditTransaction(transaction)} size='40' />
-                <Trash className='action-btn' onClick={() => handleRemoveTransaction(transaction)} size='40' />
-              </td>
-            </tr>
+            <EditableTransactionRow key={transaction.id} merchants={merchants} transaction={transaction} users={users} />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </Fragment>
   )
 }
 
-const transactionTable = css`
+const transactionMainBody = css`
   width: 100%;
-`
-
-const transactionBody = css`
-tr {
-  height: 80px;
-}
-tr:nth-child(even) {background-color: lightgray;}
-
-.credit {
-  color: #008525
-}
-
-.debit {
-  color: #a10005
-}
-
-.action-btn {
-  padding:10px;
-  :hover {
-    {cursor: pointer;}
+  .transaction-header {
+    display: flex;
+    align-items:center;
+    alight-content: space-between
   }
-}
+  .transaction-header-cell {
+    width: 100px;
+    flex: 1;
+    padding-left: 12px;
+    display: flex;
+    flex-direction: row;
+  }
+  .transaction-header-actions {
+    padding-right: 12px;
+  }
 `
+
+// const transactionBody = css`
+// tr {
+//   height: 80px;
+// }
+// tr:nth-child(even) {background-color: lightgray;}
+
+// .credit {
+//   color: #008525
+// }
+
+// .debit {
+//   color: #a10005
+// }
+
+// .action-btn {
+//   padding:10px;
+//   :hover {
+//     {cursor: pointer;}
+//   }
+// }
+// `

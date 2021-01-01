@@ -48,6 +48,10 @@ const layoutStyle = css`
   display: grid;
   grid-row-gap: 24px;
   padding: 8px;
+
+  .page-title {
+    justify-content:
+  }
 `
 
 const navStyle = css`
@@ -59,7 +63,7 @@ const navStyle = css`
     list-style-type: none;
   }
 
-  & > ul > li:not(:first-child) {
+  & > ul > li:not(:first-of-type) {
     margin-left: 16px;
   }
 `
