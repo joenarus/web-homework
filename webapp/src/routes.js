@@ -51,4 +51,7 @@ export default AppRouter
 
 const contentStyle = css`
   grid-row: 2;
+  margin: 0px 20px 0px;
+  .main-content {
+  }
 `

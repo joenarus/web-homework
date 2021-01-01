@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { TransactionForm } from './transaction-form'
 import { useMutation } from '@apollo/react-hooks'
 import { ADD_TRANSACTION } from '../queries/transaction-queries'
+import { Button } from 'react-bootstrap'
 
 AddTransaction.propTypes = {
   users: PropTypes.array.isRequired,
@@ -28,7 +29,7 @@ export function AddTransaction ({ merchants, users }) {
       <div>
         {!editing ? (
           <Fragment>
-            <button onClick={() => setEditing(true)}>Add New Transaction</button>
+            <Button onClick={() => setEditing(true)}>Add New Transaction</Button>
           </Fragment>
         ) : (
           <Fragment>
