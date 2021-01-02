@@ -4,6 +4,7 @@ import AppRouter from './routes'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloProvider as Hooks } from '@apollo/react-hooks'
 import { client } from './network/apollo-client'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 ReactDOM.render(
   (

@@ -19,6 +19,15 @@ const IMAGE_FILE_REGEX = /\.(jpg|jpeg|png|svg|bmp)$/
 const NODE_MODULES_DIR_REGEX = /node_modules/
 const GRAPH_QL_FILE_REGEX = /\.(graphql|gql)$/
 
+const bootstapConfig = {
+  test: /\.(s*)css$/,
+  use:
+    [
+      { loader: 'style-loader' },
+      { loader: 'css-loader' }
+    ]
+}
+
 const babelConfig = {
   test: JS_FILE_REGEX,
   use: {
@@ -55,6 +64,7 @@ const rules = [
     include: NODE_MODULES_DIR_REGEX,
     type: 'javascript/auto'
   },
+  bootstapConfig,
   graphQlConfig
 ]
 

@@ -28,29 +28,31 @@ export function TransactionsPage () {
     <Fragment>
       <h1>Transactions</h1>
       <AddTransaction merchants={merchants} users={users} />
-      <h2>Past Transactions</h2>
       <div css={transactionMainBody}>
-        <div className='transaction-header'>
-          <div className='transaction-header-cell'>
-            <h3>User</h3>
+        <h2>Past Transactions</h2>
+        <div className='transaction-wrapper'>
+          <div className='transaction-header'>
+            <div className='transaction-header-cell'>
+              <h5>User</h5>
+            </div>
+            <div className='transaction-header-cell'>
+              <h5>Vendor</h5>
+            </div>
+            <div className='transaction-header-cell'>
+              <h5>Description</h5>
+            </div>
+            <div className=' transaction-header-cell'>
+              <h5>Amount</h5>
+            </div>
+            <div className='transaction-header-actions'>
+              <h5>Actions</h5>
+            </div>
           </div>
-          <div className='transaction-header-cell'>
-            <h3>Vendor</h3>
+          <div className='transaction-list'>
+            {transactions.map(transaction => (
+              <EditableTransactionRow key={transaction.id} merchants={merchants} transaction={transaction} users={users} />
+            ))}
           </div>
-          <div className='transaction-header-cell'>
-            <h3>Description</h3>
-          </div>
-          <div className=' transaction-header-cell'>
-            <h3>Amount</h3>
-          </div>
-          <div className='transaction-header-actions'>
-            <h3>Actions</h3>
-          </div>
-        </div>
-        <div className='transaction-list'>
-          {transactions.map(transaction => (
-            <EditableTransactionRow key={transaction.id} merchants={merchants} transaction={transaction} users={users} />
-          ))}
         </div>
       </div>
     </Fragment>
@@ -59,14 +61,19 @@ export function TransactionsPage () {
 
 const transactionMainBody = css`
   width: 100%;
+  padding-top: 20px;
+  .transaction-wrapper {
+    padding-top: 20px;
+  }
   .transaction-header {
     display: flex;
     align-items:center;
-    alight-content: space-between
+    alight-content: space-between;
+    flex-wrap: nowrap;
   }
   .transaction-header-cell {
     width: 100px;
-    flex: 1;
+    flex: 1 2;
     padding-left: 12px;
     display: flex;
     flex-direction: row;
@@ -75,25 +82,3 @@ const transactionMainBody = css`
     padding-right: 12px;
   }
 `
-
-// const transactionBody = css`
-// tr {
-//   height: 80px;
-// }
-// tr:nth-child(even) {background-color: lightgray;}
-
-// .credit {
-//   color: #008525
-// }
-
-// .debit {
-//   color: #a10005
-// }
-
-// .action-btn {
-//   padding:10px;
-//   :hover {
-//     {cursor: pointer;}
-//   }
-// }
-// `

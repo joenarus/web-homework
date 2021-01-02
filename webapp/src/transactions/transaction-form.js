@@ -62,19 +62,23 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
           </div>
           <div className='transaction-cell'>
             <div className='debit-credit'>
-              <label>
-                          Debit
-                <input checked={transaction.debit} name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
-              </label>
-              <label>
-                          Credit
-                <input checked={transaction.credit} name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
-              </label>
+              <div className='debit-credit-cell'>
+                <label htmlFor='debit'>
+                  Debit
+                </label>
+                <input checked={transaction.debit} id='debit' name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
+              </div>
+              <div className='debit-credit-cell'>
+                <label htmlFor='credit'>
+                  Credit
+                </label>
+                <input checked={transaction.credit} id='credit' name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
+              </div>
             </div>
             <input className={'amount ' + (transaction.credit ? 'credit' : 'debit')} name='amount' onChange={handleInputChange} step='0.01' type='number' value={transaction.amount} />
           </div>
           <input onClick={submitMethod} type='submit' value='Save' />
-          <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='25' />
+          <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='40' />
         </div>
       </form>
     </Fragment>
@@ -90,26 +94,34 @@ const addableTransaction = css`
     }
     
     .transaction-cell {
-      width: 100px;
       flex: 1 2;
       padding-left: 12px;
       display: flex;
       flex-direction: row;
-      font-size: 20px;
+      font-size: 18px;
       .debit-credit {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
           font-size: 12px;
+          padding-right: 12px;
+          .debit-credit-cell {
+              label {
+
+              }
+              input {
+                margin-left: 12px;
+              }
+          }
       }
       .amount {
           padding-left: 12px;
-          font-size: 20px;
+          font-size: 18px;
       }
       select {
           width: 100%;
           height: 30px;
-          font-size: 20px;
+          font-size: 18px;
       }
       textarea {
           width: 100%;

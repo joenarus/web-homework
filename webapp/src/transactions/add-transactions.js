@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { TransactionForm } from './transaction-form'
 import { useMutation } from '@apollo/react-hooks'
 import { ADD_TRANSACTION } from '../queries/transaction-queries'
+import { Button } from 'react-bootstrap'
 
 AddTransaction.propTypes = {
   users: PropTypes.array.isRequired,
@@ -28,7 +29,7 @@ export function AddTransaction ({ merchants, users }) {
       <div>
         {!editing ? (
           <Fragment>
-            <button onClick={() => setEditing(true)}>Add New Transaction</button>
+            <Button onClick={() => setEditing(true)}>Add New Transaction</Button>
           </Fragment>
         ) : (
           <Fragment>
@@ -36,16 +37,16 @@ export function AddTransaction ({ merchants, users }) {
               <div css={transactionHeader}>
                 <div className='transaction-header'>
                   <div className='transaction-header-cell'>
-                    <h3>User</h3>
+                    <h5>User</h5>
                   </div>
                   <div className='transaction-header-cell'>
-                    <h3>Vendor</h3>
+                    <h5>Vendor</h5>
                   </div>
                   <div className='transaction-header-cell'>
-                    <h3>Description</h3>
+                    <h5>Description</h5>
                   </div>
                   <div className=' transaction-header-cell'>
-                    <h3>Amount</h3>
+                    <h5>Amount</h5>
                   </div>
                 </div>
               </div>
