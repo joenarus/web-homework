@@ -72,11 +72,14 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
               {transaction.merchant.name}
             </div>
             <div className='transaction-cell'>
+              {transaction.category}
+            </div>
+            <div className='transaction-cell'>
               <p className='description'>
                 {transaction.description}
               </p>
             </div>
-            <div className={(transaction.credit ? 'credit' : 'debit') + ' transaction-cell'}>
+            <div className={(transaction.credit ? 'credit' : 'debit') + ' transaction-cell amount'}>
               {(transaction.credit ? '+ $' : transaction.debit ? '- $' : '') + checkForRomanNumeral(transaction.amount) }
             </div>
             <div className='action-btn'>
@@ -114,8 +117,7 @@ const transactionRow = css`
         width: 100%;
     }
     .transaction-cell {
-        width: 100px;
-        flex: 1 2;
+        flex: 1 4;
         padding-left: 12px;
         display: flex;
         flex-direction: row;
@@ -130,6 +132,10 @@ const transactionRow = css`
         
     .debit {
         color: #a10005
+    }
+    .amount {
+      font-size: 2.2vmin;
+      word-break: break-all 
     }
         
     .action-btn {

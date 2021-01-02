@@ -13,6 +13,7 @@ defmodule HomeworkWeb.Schemas.TransactionsSchema do
     field(:credit, :boolean)
     field(:debit, :boolean)
     field(:description, :string)
+    field(:category, :string)
     field(:merchant_id, :id)
     field(:company_id, :id)
     field(:inserted_at, :naive_datetime)
@@ -42,6 +43,7 @@ defmodule HomeworkWeb.Schemas.TransactionsSchema do
       arg(:credit, non_null(:boolean))
       arg(:debit, non_null(:boolean))
       arg(:description, non_null(:string))
+      arg(:category, non_null(:string))
 
       resolve(&TransactionsResolver.create_transaction/3)
     end
@@ -57,6 +59,7 @@ defmodule HomeworkWeb.Schemas.TransactionsSchema do
       arg(:credit, non_null(:boolean))
       arg(:debit, non_null(:boolean))
       arg(:description, non_null(:string))
+      arg(:category, non_null(:string))
 
       resolve(&TransactionsResolver.update_transaction/3)
     end

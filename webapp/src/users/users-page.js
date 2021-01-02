@@ -1,13 +1,11 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { GET_USERS, EDIT_USER, DELETE_USER } from '../queries/user-queries'
+import { GET_USERS, DELETE_USER } from '../queries/user-queries'
 import { AddUser } from './add-users'
 import { css } from '@emotion/core'
-import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
 import { Trash } from '@emotion-icons/bootstrap/Trash'
 export function UsersPage () {
   const { data } = useQuery(GET_USERS, { pollInterval: 200 })
-  const [editUser] = useMutation(EDIT_USER)
   const [deleteUser] = useMutation(DELETE_USER)
 
   const [users, setUsers] = useState([])
@@ -17,10 +15,6 @@ export function UsersPage () {
       setUsers(data.users)
     }
   }, [data])
-
-  function handleEditUser (user) {
-    editUser({ variables: generateVariables({ ...user }) })
-  }
 
   function handleRemoveUser (user) {
     deleteUser({ variables: generateVariables({ ...user }) })
@@ -50,7 +44,6 @@ export function UsersPage () {
               <td>{user.dob}</td>
               <td>{user.company.name}</td>
               <td>
-                <PencilSquare className='action-btn' onClick={() => handleEditUser(user)} size='40' />
                 <Trash className='action-btn' onClick={() => handleRemoveUser(user)} size='40' />
               </td>
             </tr>

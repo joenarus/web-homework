@@ -3,7 +3,6 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { GET_COMPANIES, DELETE_COMPANY } from '../queries/company-queries'
 import { AddCompanies } from './add-companies'
 import { css } from '@emotion/core'
-import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
 import { Trash } from '@emotion-icons/bootstrap/Trash'
 export function CompaniesPage () {
   const { data } = useQuery(GET_COMPANIES, { pollInterval: 200 })
@@ -37,10 +36,9 @@ export function CompaniesPage () {
           {companies.map(company => (
             <tr className='transaction' key={company.id}>
               <td>{company.name}</td>
-              <td>{company.creditLine}</td>
-              <td>{company.availableCredit}</td>
+              <td>{'$' + company.creditLine}</td>
+              <td>{'$' + company.availableCredit}</td>
               <td>
-                <PencilSquare className='action-btn' size='40' />
                 <Trash className='action-btn' onClick={() => handleRemoveCompany(company)} size='40' />
               </td>
             </tr>
