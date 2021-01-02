@@ -1,13 +1,11 @@
 import React, { useState, Fragment, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { GET_MERCHANTS, EDIT_MERCHANT, DELETE_MERCHANT } from '../queries/merchant-queries'
+import { GET_MERCHANTS, DELETE_MERCHANT } from '../queries/merchant-queries'
 import { AddMerchant } from './add-merchants'
 import { css } from '@emotion/core'
-import { PencilSquare } from '@emotion-icons/bootstrap/PencilSquare'
 import { Trash } from '@emotion-icons/bootstrap/Trash'
 export function MerchantsPage () {
   const { data } = useQuery(GET_MERCHANTS, { pollInterval: 200 })
-  const [editMerchant] = useMutation(EDIT_MERCHANT)
   const [deleteMerchant] = useMutation(DELETE_MERCHANT)
 
   const [merchants, setMerchants] = useState([])
@@ -17,10 +15,6 @@ export function MerchantsPage () {
       setMerchants(data.merchants)
     }
   }, [data])
-
-  function handleEditUser (merchant) {
-    editMerchant({ variables: { ...merchant } })
-  }
 
   function handleRemoveUser (merchant) {
     deleteMerchant({ variables: { ...merchant } })
@@ -44,7 +38,6 @@ export function MerchantsPage () {
               <td>{merchant.name}</td>
               <td>{merchant.description}</td>
               <td>
-                <PencilSquare className='action-btn' onClick={() => handleEditUser(merchant)} size='40' />
                 <Trash className='action-btn' onClick={() => handleRemoveUser(merchant)} size='40' />
               </td>
             </tr>

@@ -14,6 +14,8 @@ TransactionForm.propTypes = {
 
 }
 
+const categories = ['Electronics', 'Groceries', 'Other', 'Monthly Bills', 'Office Supplies', 'Travel']
+
 export function TransactionForm ({ transaction, updateTransactionMethod, merchants, users, setEditing, submitMethod }) {
   const handleInputChange = event => {
     const target = event.target
@@ -55,6 +57,12 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
             <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={transaction.merchant}>
               <option value={null}>None</option>
               {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
+            </select>
+          </div>
+          <div className='transaction-cell'>
+            <select name='category' onBlur={handleInputChange} onChange={handleInputChange} required value={transaction.category}>
+              <option value={null}>None</option>
+              {categories.map((category) => <option key={category}>{category}</option>)}
             </select>
           </div>
           <div className='transaction-cell'>

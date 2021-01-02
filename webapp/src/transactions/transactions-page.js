@@ -39,6 +39,9 @@ export function TransactionsPage () {
               <h5>Vendor</h5>
             </div>
             <div className='transaction-header-cell'>
+              <h5>Category</h5>
+            </div>
+            <div className='transaction-header-cell'>
               <h5>Description</h5>
             </div>
             <div className=' transaction-header-cell'>
