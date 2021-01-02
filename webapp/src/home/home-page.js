@@ -20,9 +20,10 @@ export function Home () {
       const year = dateAdded.getUTCFullYear()
       const formattedDate = year + '/' + month + '/' + day
       if (tempData.hasOwnProperty(formattedDate)) {
-        tempData[formattedDate] = tempData[formattedDate] + item.amount
+        // Substract credits from the spent amount per day
+        tempData[formattedDate] += tempData[formattedDate] + item.credit ? -item.amount : item.amount
       } else {
-        tempData[formattedDate] = item.amount
+        tempData[formattedDate] = item.credit ? -item.amount : item.amount
       }
     }
     for (const property of Object.keys(tempData)) {
@@ -38,9 +39,10 @@ export function Home () {
       const item = dataToConvert[index]
       const category = item.category
       if (tempData.hasOwnProperty(category)) {
-        tempData[category] = tempData[category] + item.amount
+        // Pie charts only support positive numbers, since it's spent per category, we ignore credit
+        tempData[category] += tempData[category] + item.credit ? 0 : item.amount
       } else {
-        tempData[category] = item.amount
+        tempData[category] = item.credit ? 0 : item.amount
       }
     }
     for (const property of Object.keys(tempData)) {
