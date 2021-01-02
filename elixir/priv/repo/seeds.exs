@@ -71,6 +71,7 @@ transaction_data = [
         credit: true,
         debit: false,
         description: "Return of product",
+        category: "Electronics",
         merchant_id: "5fbbe294-1d59-4f5b-864a-6fd08f7656cb",
         user_id: "127233f3-f07c-4ae8-ae1b-cd9cfb0cebc9",
         company_id: "6bdd7d17-8e75-4704-99ae-c54d49158e0f"
@@ -80,7 +81,8 @@ transaction_data = [
         amount: 2500065,
         credit: false,
         debit: true,
-        description: "Groceries",
+        description: "Grocery Run",
+        category: "Groceries",
         merchant_id: "dd141601-6627-4e40-8b63-3727d18d1f0c",
         user_id: "831c49c2-dc45-4267-940f-b350e3ccdeda",
         company_id: "6ff816f8-091f-4245-8cae-9eb397a11b0d"
@@ -139,6 +141,7 @@ Enum.each(transaction_data, fn(data) ->
         debit: data.debit, 
         credit: data.credit, 
         description: data.description, 
+        category: data.category,
         merchant_id: data.merchant_id, 
         user_id: data.user_id,
         company_id: data.company_id

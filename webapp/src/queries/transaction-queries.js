@@ -9,6 +9,8 @@ export const GET_TRANSACTIONS = gql`
             description
             credit
             debit
+            insertedAt
+            category
             user {
                 id
                 firstName
@@ -29,7 +31,8 @@ export const ADD_TRANSACTION = gql`
         $amount: Float!, 
         $debit: Boolean!, 
         $credit: Boolean!, 
-        $description: String!, 
+        $description: String!,
+        $category: String!, 
         $merchant: ID!, 
         $user: ID!,
         $company: ID!
@@ -37,6 +40,7 @@ export const ADD_TRANSACTION = gql`
         createTransaction(
             amount: $amount, 
             description: $description, 
+            category: $category, 
             credit: $credit, 
             debit: $debit,
             merchantId: $merchant, 
@@ -68,6 +72,7 @@ export const EDIT_TRANSACTION = gql`
         $debit: Boolean!, 
         $credit: Boolean!, 
         $description: String!, 
+        $category: String!, 
         $merchant: ID!, 
         $user: ID!,
         $company: ID!
@@ -76,6 +81,7 @@ export const EDIT_TRANSACTION = gql`
             id: $id,
             amount: $amount, 
             description: $description, 
+            category: $category, 
             credit: $credit, 
             debit: $debit,
             merchantId: $merchant, 
