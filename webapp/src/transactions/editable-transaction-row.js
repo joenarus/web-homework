@@ -45,10 +45,7 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
   function checkForRomanNumeral (amount) {
     const decimalAmount = parseFloat(transaction.amount).toFixed(2)
     let result = ''
-
-    console.log('here1')
     if (!(retrieveSetting('romanNumeralsActive') === 'true')) {
-      console.log('here')
       result += amount
     } else {
       if (retrieveSetting('romanNumeralsDecimal') === 'true') {
