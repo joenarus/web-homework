@@ -65,13 +65,13 @@ export function AddTransaction ({ merchants, users }) {
 
 const addTransactionWrapper = css`
   .transaction-row {
-    width: 75%;
+    width: 100%;
   }
 `
 
 const transactionHeader = css`
 .transaction-header {
-  width: 75%;
+  width: 100%;
   display: flex;
   align-items:center;
   alight-content: space-between

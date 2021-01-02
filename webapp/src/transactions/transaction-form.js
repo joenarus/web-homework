@@ -124,12 +124,13 @@ const addableTransaction = css`
       }
       .amount {
           padding-left: 12px;
-          font-size: 18px;
+          height: 40px;
+          font-size: 16px;
       }
       select {
           width: 100%;
           height: 30px;
-          font-size: 18px;
+          font-size: 16px;
       }
       textarea {
           width: 100%;

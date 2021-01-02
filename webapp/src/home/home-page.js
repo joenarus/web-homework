@@ -1,13 +1,31 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import Chart from 'react-google-charts'
 import { GET_TRANSACTIONS } from '../queries/transaction-queries'
+import { GET_USERS } from '../queries/user-queries'
+import { GET_MERCHANTS } from '../queries/merchant-queries'
 import { useQuery } from '@apollo/react-hooks'
 import { css } from '@emotion/core'
+import { AddTransaction } from '../transactions/add-transactions'
 
 export function Home () {
+  const userData = useQuery(GET_USERS)
+  const merchantData = useQuery(GET_MERCHANTS)
+  const [users, setUsers] = useState([])
+  const [merchants, setMerchants] = useState([])
   const { data } = useQuery(GET_TRANSACTIONS)
   const [lineChartData, setLineChartData] = useState([])
   const [pieChartData, setPieChartData] = useState([])
+
+  useEffect(() => {
+    if (data && data.transactions) {
+      createHistogramData(data.transactions)
+      createPieChartData(data.transactions)
+    } if (userData.data && userData.data.users) {
+      setUsers(userData.data.users)
+    } if (merchantData.data && merchantData.data.merchants) {
+      setMerchants(merchantData.data.merchants)
+    }
+  }, [data, userData, merchantData])
 
   function createHistogramData (dataToConvert) {
     let newData = [['Date', 'Amount Spent']]
@@ -51,13 +69,6 @@ export function Home () {
     setPieChartData(newData)
   }
 
-  useEffect(() => {
-    if (data && data.transactions) {
-      createHistogramData(data.transactions)
-      createPieChartData(data.transactions)
-    }
-  }, [data])
-
   return (
     <Fragment>
       <h1>Welcome to the Dashboard</h1>
@@ -85,6 +96,7 @@ export function Home () {
           width={'600px'}
         />
       </div>
+      <AddTransaction merchants={merchants} users={users} />
     </Fragment>
   )
 }
