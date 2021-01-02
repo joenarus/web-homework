@@ -6,7 +6,6 @@ import { Trash } from '@emotion-icons/bootstrap/Trash'
 import PropTypes from 'prop-types'
 import { css } from '@emotion/core'
 import { TransactionForm } from './transaction-form'
-import { settings } from '../settings/settings'
 import { convertToRoman } from '../helpers/roman-numeral.util'
 
 EditableTransactionRow.propTypes = {
@@ -37,14 +36,22 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
     setEditing(false)
   }
 
+  function retrieveSetting (settingName) {
+    if (typeof window !== 'undefined') {
+      return window.localStorage.getItem(settingName)
+    }
+  }
+
   function checkForRomanNumeral (amount) {
-    console.log(amount)
     const decimalAmount = parseFloat(transaction.amount).toFixed(2)
     let result = ''
-    if (!settings.romanNumeralsActive) {
+
+    console.log('here1')
+    if (!(retrieveSetting('romanNumeralsActive') === 'true')) {
+      console.log('here')
       result += amount
     } else {
-      if (settings.romanNumeralDecimal) {
+      if (retrieveSetting('romanNumeralsDecimal') === 'true') {
         const str = decimalAmount.toString()
         const array = str.split('.')
         result += convertToRoman(parseInt(array[0])) + '.'

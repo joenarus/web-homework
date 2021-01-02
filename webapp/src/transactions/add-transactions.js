@@ -37,16 +37,16 @@ export function AddTransaction ({ merchants, users }) {
               <div css={transactionHeader}>
                 <div className='transaction-header'>
                   <div className='transaction-header-cell'>
-                    <h3>User</h3>
+                    <h5>User</h5>
                   </div>
                   <div className='transaction-header-cell'>
-                    <h3>Vendor</h3>
+                    <h5>Vendor</h5>
                   </div>
                   <div className='transaction-header-cell'>
-                    <h3>Description</h3>
+                    <h5>Description</h5>
                   </div>
                   <div className=' transaction-header-cell'>
-                    <h3>Amount</h3>
+                    <h5>Amount</h5>
                   </div>
                 </div>
               </div>
