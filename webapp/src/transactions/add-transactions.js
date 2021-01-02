@@ -19,9 +19,15 @@ export function AddTransaction ({ merchants, users }) {
 
   const handleAdd = event => {
     event.preventDefault()
-    createTransaction({ variables: newTransaction })
-    setEditing(false)
-    setNewTransaction({ amount: '', user: '', merchant: '', company: '', description: '', credit: false, debit: true })
+    createTransaction({ variables: newTransaction }).then(({ data }) => {
+      setNewTransaction({ amount: '', user: '', merchant: '', company: '', description: '', credit: false, debit: true })
+    }).catch(e => {
+      for (const key of Object.keys(newTransaction)) {
+        if (!newTransaction[key]) {
+          throw Error('Must fill out field: ' + key)
+        }
+      }
+    })
   }
 
   return (
@@ -65,13 +71,13 @@ export function AddTransaction ({ merchants, users }) {
 
 const addTransactionWrapper = css`
   .transaction-row {
-    width: 75%;
+    width: 100%;
   }
 `
 
 const transactionHeader = css`
 .transaction-header {
-  width: 75%;
+  width: 100%;
   display: flex;
   align-items:center;
   alight-content: space-between

@@ -3,14 +3,15 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack -d",
-    "start": "webpack-dev-server -d --hot"
+    "start": "webpack-dev-server -d --hot",
+    "test": "jest"
   },
   "jest": {
     "setupFiles": [
-      "../../testSetup.js"
+      "./test.setup.js"
     ],
     "setupFilesAfterEnv": [
-      "../../jest.config.framework.js"
+      "./jest.config.framework.js"
     ],
     "globals": {
       "__DivvyEnvironment": true
@@ -22,21 +23,19 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/assetMock.js"
     },
-    "snapshotSerializers": [
-      "jest-emotion/serializer"
-    ],
     "moduleFileExtensions": [
       "js",
       "jsx",
       "json"
     ],
     "transform": {
-      "\\.(gql|graphql)$": "jest-transform-graphql",
-      ".jsx?$": "babel-jest"
+      ".jsx?$": "babel-jest",
+      "^.+\\.js$": "babel-jest"
     }
   },
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
+    "@apollo/react-testing": "^4.0.0",
     "@emotion/core": "10.0.10",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
@@ -50,13 +49,14 @@
     "bootstrap": "^4.5.3",
     "emotion-icons": "^3.2.0",
     "emotion-theming": "10.0.10",
+    "enzyme": "^3.11.0",
     "graphql": "14.3.1",
     "graphql-tag": "^2.10.1",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-apollo": "2.5.6",
     "react-bootstrap": "^1.4.0",
-    "react-dom": "16.8.6",
+    "react-dom": "^16.8.6",
     "react-google-charts": "^3.0.15",
     "react-hot-loader": "4.11.0",
     "react-router-dom": "5.0.1"
@@ -91,6 +91,7 @@
     "@babel/register": "7.4.4",
     "@babel/runtime": "7.4.5",
     "@emotion/babel-preset-css-prop": "10.0.9",
+    "@testing-library/react": "^11.2.2",
     "babel-eslint": "10.0.1",
     "babel-jest": "24.8.0",
     "babel-loader": "8.0.6",
@@ -134,7 +135,7 @@
     "prettier": "1.18.2",
     "prettier-eslint-cli": "4.7.1",
     "react-addons-perf": "15.4.2",
-    "react-addons-test-utils": "15.6.2",
+    "react-addons-test-utils": "^15.6.2",
     "react-stub-context": "0.8.1",
     "react-test-renderer": "16.8.6",
     "react-testing-library": "8.0.1",

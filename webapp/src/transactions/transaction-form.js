@@ -45,24 +45,24 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
 
   return (
     <Fragment>
-      <form>
+      <form data-testid='transaction-form'>
         <div className='transaction-row' css={addableTransaction}>
           <div className='transaction-cell'>
-            <select name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={transaction.user}>
+            <select data-testid='user-select' name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={transaction.user}>
               <option value={null}>None</option>
               {users.map((user) => <option key={user.id} value={user.id}>{user.firstName + ' ' + user.lastName}</option>)}
             </select>
           </div>
           <div className='transaction-cell'>
-            <select name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={transaction.merchant}>
+            <select data-testid='merchant-select' name='merchant' onBlur={handleInputChange} onChange={handleInputChange} required value={transaction.merchant}>
               <option value={null}>None</option>
               {merchants.map((merchant) => <option key={merchant.id} value={merchant.id}>{merchant.name}</option>)}
             </select>
           </div>
           <div className='transaction-cell'>
-            <select name='category' onBlur={handleInputChange} onChange={handleInputChange} required value={transaction.category}>
+            <select data-testid='category-select' name='category' onBlur={handleInputChange} onChange={handleInputChange} required value={transaction.category}>
               <option value={null}>None</option>
-              {categories.map((category) => <option key={category}>{category}</option>)}
+              {categories.map((category) => <option data-testid='category-select-option' key={category}>{category}</option>)}
             </select>
           </div>
           <div className='transaction-cell'>
@@ -74,18 +74,18 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
                 <label htmlFor='debit'>
                   Debit
                 </label>
-                <input checked={transaction.debit} id='debit' name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
+                <input checked={transaction.debit} data-testid='transaction-form-debit' id='debit' name='debit-or-credit' onChange={handleRadioChange} required type='radio' value='debit' />
               </div>
               <div className='debit-credit-cell'>
                 <label htmlFor='credit'>
                   Credit
                 </label>
-                <input checked={transaction.credit} id='credit' name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
+                <input checked={transaction.credit} data-testid='transaction-form-credit' id='credit' name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
               </div>
             </div>
-            <input className={'amount ' + (transaction.credit ? 'credit' : 'debit')} name='amount' onChange={handleInputChange} step='0.01' type='number' value={transaction.amount} />
+            <input className={'amount ' + (transaction.credit ? 'credit' : 'debit')} data-testid='transaction-form-amount' name='amount' onChange={handleInputChange} step='0.01' type='number' value={transaction.amount} />
           </div>
-          <input onClick={submitMethod} type='submit' value='Save' />
+          <input data-testid='transaction-form-submit' onClick={submitMethod} type='submit' value='Save' />
           <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='40' />
         </div>
       </form>
@@ -124,12 +124,13 @@ const addableTransaction = css`
       }
       .amount {
           padding-left: 12px;
-          font-size: 18px;
+          height: 40px;
+          font-size: 16px;
       }
       select {
           width: 100%;
           height: 30px;
-          font-size: 18px;
+          font-size: 16px;
       }
       textarea {
           width: 100%;

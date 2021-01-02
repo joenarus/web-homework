@@ -9,6 +9,13 @@ export function Home () {
   const [lineChartData, setLineChartData] = useState([])
   const [pieChartData, setPieChartData] = useState([])
 
+  useEffect(() => {
+    if (data && data.transactions) {
+      createHistogramData(data.transactions)
+      createPieChartData(data.transactions)
+    }
+  }, [data])
+
   function createHistogramData (dataToConvert) {
     let newData = [['Date', 'Amount Spent']]
     let tempData = {}
@@ -50,13 +57,6 @@ export function Home () {
     }
     setPieChartData(newData)
   }
-
-  useEffect(() => {
-    if (data && data.transactions) {
-      createHistogramData(data.transactions)
-      createPieChartData(data.transactions)
-    }
-  }, [data])
 
   return (
     <Fragment>
