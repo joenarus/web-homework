@@ -96,7 +96,6 @@ export function Home () {
           width={'600px'}
         />
       </div>
-      <AddTransaction merchants={merchants} users={users} />
     </Fragment>
   )
 }
