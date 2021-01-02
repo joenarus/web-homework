@@ -32,8 +32,9 @@ export function EditableTransactionRow ({ merchants, transaction, users }) {
 
   const handleSubmit = event => {
     event.preventDefault()
-    editTransaction({ variables: { ...currentChanges } })
-    setEditing(false)
+    editTransaction({ variables: { ...currentChanges } }).then(() => {
+      setEditing(false)
+    })
   }
 
   function retrieveSetting (settingName) {
