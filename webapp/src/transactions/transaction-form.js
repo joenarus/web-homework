@@ -45,7 +45,7 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
 
   return (
     <Fragment>
-      <form data-testid='transaction-form'>
+      <form data-testid='transaction-form' onSubmit={submitMethod}>
         <div className='transaction-row' css={addableTransaction}>
           <div className='transaction-cell'>
             <select data-testid='user-select' name='user' onBlur={handleInputChange} onChange={handleUserChange} required value={transaction.user}>
@@ -66,7 +66,7 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
             </select>
           </div>
           <div className='transaction-cell'>
-            <textarea name='description' onChange={handleInputChange} type='textbox' value={transaction.description} />
+            <textarea name='description' onChange={handleInputChange} required type='textbox' value={transaction.description} />
           </div>
           <div className='transaction-cell'>
             <div className='debit-credit'>
@@ -83,9 +83,9 @@ export function TransactionForm ({ transaction, updateTransactionMethod, merchan
                 <input checked={transaction.credit} data-testid='transaction-form-credit' id='credit' name='debit-or-credit' onChange={handleRadioChange} type='radio' value='credit' />
               </div>
             </div>
-            <input className={'amount ' + (transaction.credit ? 'credit' : 'debit')} data-testid='transaction-form-amount' name='amount' onChange={handleInputChange} step='0.01' type='number' value={transaction.amount} />
+            <input className={'amount ' + (transaction.credit ? 'credit' : 'debit')} data-testid='transaction-form-amount' name='amount' onChange={handleInputChange} required step='0.01' type='number' value={transaction.amount} />
           </div>
-          <input data-testid='transaction-form-submit' onClick={submitMethod} type='submit' value='Save' />
+          <input data-testid='transaction-form-submit' type='submit' value='Save' />
           <CancelPresentation className='action-btn' onClick={() => setEditing(false)} size='40' />
         </div>
       </form>
