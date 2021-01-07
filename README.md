@@ -1,29 +1,51 @@
 # Divvy Homework Assignment
 
-This repository provides a starting point for a basic React + GraphQL application.
-All of the configuration boilerplate is complete so you can start by writing the code that you want us to see.
-
-Please **fork** this repo to your GitHub account.
+An app to track transactions between vendors and users
 
 
 ## Project Setup
 
-This repository is split into a web app directory (eg `/webapp`) and two server directories (eg `/webserver` and `/elixir`).
+In your choice terminal execute the follow commands: 
+1. * Navigate to the webapp directory: `cd webapp`
+2. * Install dependent libraries: `npm install`
 
-The `/webserver` one includes a functional GraphQL server in NodeJS with MongoDB backing it.
+To set up Phoenix Server:
+Make sure you have your Postgres database installed and running:
+username: postgress
+password: postgress
 
-The `/elixir` one includes a functional GraphQL server in Elixir with Postgresql backing it.
+Or update the elixir/config/dev.exs and elixir/config/text.exs files to match your current username/password settings for postgres.
 
-Pick one or the other to use.
+1. Navigate to the elixir directory with cd elixir
+2. To start the server with seeded data:
 
-This project is intentionally not utilizing 3rd party services or create-react-app to give you the opportunity to showcase your talents wherever they are, be it the front end or the back end.
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.setup`
+  * Seed database with `mix run priv/repo/seeds.exs`
 
 **Node** version **12** is the safest NodeJS release to use.  You can try version 14, but there can be node-gyp/python issues on OSX.
 
-## Instructions
+## Running the Project
 
-See the [frontend instructions](frontend.md) for frontend focused instructions.
+1. In the elixir directory run: 
+    * Start Phoenix endpoint with `mix phx.server`
+This will get your Phoenix server up and running and ready to receive calls
 
-See the [backend instructions](backend.md) for backend focused instructions.
+2. In the webapp directory:
+    * Use the command: `npm start`
+    This will boot up the application at localhost:3000
 
+## Cleaning up Data
+1. In the elixir directory run: 
+  * Drops dbs: `mix ecto.reset`
+  * As a precaution: reseed database with: `mix run priv/repo/seeds.exs`
+This will reset the data back to the originally seeded data
+
+
+## Testing
+For elixir: 
+    In the elixir directory run: `mix test`
+
+For the webapp: 
+    In the webapp directory run: `npm test`
 
