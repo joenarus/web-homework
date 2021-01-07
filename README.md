@@ -22,9 +22,9 @@ Or update the elixir/config/dev.exs and elixir/config/text.exs files to match yo
 
 1. Navigate to the elixir directory: `cd elixir`
 2. To start the server with seeded data:
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Seed database with `mix run priv/repo/seeds.exs`
+    * Install dependencies with `mix deps.get`
+    * Create and migrate your database with `mix ecto.setup`
+    * Seed database with `mix run priv/repo/seeds.exs`
 
 ## Running the Project
 
@@ -38,8 +38,9 @@ This will get your Phoenix server up and running and ready to receive calls
 
 ## Cleaning up Data
 1. In the elixir directory run: 
-  * Drops dbs: `mix ecto.reset`
-  * As a precaution: reseed database with: `mix run priv/repo/seeds.exs`
+    * Drops dbs: `mix ecto.reset`
+    * As a precaution: reseed database with: `mix run priv/repo/seeds.exs`
+
 This will reset the data back to the originally seeded data
 
 
