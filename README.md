@@ -19,7 +19,7 @@ username: postgress
 
 password: postgress
 
-Or update the elixir/config/dev.exs and elixir/config/text.exs files to match your current username/password settings for postgres.
+**Or update the elixir/config/dev.exs and elixir/config/text.exs files to match your current username/password settings for postgres.**
 
 1. Navigate to the elixir directory: `cd elixir`
 2. To start the server with seeded data:
@@ -37,8 +37,10 @@ This will get your Phoenix server up and running and ready to receive calls
 
 
 **Starting up the webapp:**
-2. In the webapp directory:
+
+1. In the webapp directory:
     * Use the command: `npm start`
+    
     This will boot up the application at localhost:3000
 
 ## Cleaning up Data
