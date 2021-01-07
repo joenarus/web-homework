@@ -20,7 +20,7 @@ password: postgress
 
 Or update the elixir/config/dev.exs and elixir/config/text.exs files to match your current username/password settings for postgres.
 
-1. Navigate to the elixir directory with `cd elixir`
+1. Navigate to the elixir directory: `cd elixir`
 2. To start the server with seeded data:
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
