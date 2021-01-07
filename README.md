@@ -7,12 +7,13 @@ An app to track transactions between vendors and users
 
 **Node** version **12** is the safest NodeJS release to use.  You can try version 14, but there can be node-gyp/python issues on OSX.
 
-In your choice terminal execute the follow commands: 
-1. * Navigate to the webapp directory: `cd webapp`
-2. * Install dependent libraries: `npm install`
+**To setup the webapp:** 
+1. Navigate to the webapp directory: `cd webapp`
+2. Install dependent libraries: `npm install`
 
-To set up Phoenix Server:
-Make sure you have your Postgres database installed and running:
+**To set up Phoenix Server:**
+
+**Make sure you have your Postgres database installed and running:**
 
 username: postgress
 
@@ -28,10 +29,14 @@ Or update the elixir/config/dev.exs and elixir/config/text.exs files to match yo
 
 ## Running the Project
 
+**Starting up the Phoenix server:**
+
 1. In the elixir directory run: 
     * Start Phoenix endpoint with `mix phx.server`
 This will get your Phoenix server up and running and ready to receive calls
 
+
+**Starting up the webapp:**
 2. In the webapp directory:
     * Use the command: `npm start`
     This will boot up the application at localhost:3000
