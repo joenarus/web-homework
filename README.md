@@ -5,25 +5,26 @@ An app to track transactions between vendors and users
 
 ## Project Setup
 
+**Node** version **12** is the safest NodeJS release to use.  You can try version 14, but there can be node-gyp/python issues on OSX.
+
 In your choice terminal execute the follow commands: 
 1. * Navigate to the webapp directory: `cd webapp`
 2. * Install dependent libraries: `npm install`
 
 To set up Phoenix Server:
 Make sure you have your Postgres database installed and running:
+
 username: postgress
+
 password: postgress
 
 Or update the elixir/config/dev.exs and elixir/config/text.exs files to match your current username/password settings for postgres.
 
-1. Navigate to the elixir directory with cd elixir
+1. Navigate to the elixir directory with `cd elixir`
 2. To start the server with seeded data:
-
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
   * Seed database with `mix run priv/repo/seeds.exs`
-
-**Node** version **12** is the safest NodeJS release to use.  You can try version 14, but there can be node-gyp/python issues on OSX.
 
 ## Running the Project
 
@@ -48,4 +49,3 @@ For elixir:
 
 For the webapp: 
     In the webapp directory run: `npm test`
-
